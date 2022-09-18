@@ -2,11 +2,11 @@
 
 TODO list
 - [ ] Bikin class Fraction supaya perhitungannya lebih presisi (opsional)
-- [ ] Bikin class Row
-  - [ ] method selektor
-  - [ ] method add
-  - [ ] method multiply
-  - [ ] method toString (buat debug)
+- [x] Bikin class Row
+  - [x] method selektor
+  - [x] method add
+  - [x] method multiply
+  - [x] method toString (buat debug)
 - [ ] Bikin class Matrix
   - [ ] method selektor
   - [ ] method add
