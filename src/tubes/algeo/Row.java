@@ -40,14 +40,6 @@ public class Row {
         data[index] = value;
     }
 
-    public void setData(double[] data) {
-        this.data = data;
-    }
-
-    public int length() {
-        return data.length;
-    }
-
     @Override
     public String toString() {
         String s = "[ ";
