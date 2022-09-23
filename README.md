@@ -7,11 +7,11 @@ TODO list
   - [x] method add
   - [x] method multiply
   - [x] method toString (buat debug)
-- [ ] Bikin class Matrix
+- [x] Bikin class Matrix
   - [x] method selektor
   - [x] method add
   - [x] method multiply (skalar)
   - [x] method multiply (matriks)
   - [x] method determinan (metode OBE)
-  - [ ] method determinan (metode ekspansi kofaktor)
+  - [x] method determinan (metode ekspansi kofaktor)
   - [x] method toString (buat debug)
