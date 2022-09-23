@@ -15,7 +15,7 @@ public class RowTest {
             new Row(new double[] { 3,5,2 }),
             new Row(new double[] { 4,8,0 }),
             new Row(new double[] { 0,5,2 }),
-            new Row(new double[] { 0,0,0 }),
+            new Row(new double[] { 1,2,1 }),
             new Row(new double[] { 8,7,0 })
         });
         Matrix m2 = new Matrix(3, 5);
@@ -28,5 +28,6 @@ public class RowTest {
         m1.print();
 
         System.out.println(m1.getDeterminantGauss());
+        System.out.println(m1.getDeterminantCofactor());
     }
 }

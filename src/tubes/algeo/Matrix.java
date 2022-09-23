@@ -14,7 +14,7 @@ public class Matrix {
         data = matrix;
     }
 
-    private void setElements(int i, int j, double value) {
+    private void setElement(int i, int j, double value) {
         data[i].setElement(j, value);
     }
 
@@ -24,6 +24,10 @@ public class Matrix {
                 data[i].setElement(j, value);;
             }
         }
+    }
+
+    public double getElement(int row, int col) {
+        return data[row].getElement(col);
     }
 
     /**
@@ -89,10 +93,38 @@ public class Matrix {
                 for (int k = 0; k < getCol(); k++) {
                     sum += data[i].getElement(k) * others.getMatrixData()[k].getElement(j);
                 }
-                result.setElements(i, j, sum);
+                result.setElement(i, j, sum);
             }
         }
         return result;
+    }
+
+    public double getCofactor(int row, int col) {
+        Matrix mk = new Matrix(getRow() - 1, getCol() - 1);
+        int idx = 0;
+        for (int i = 0; i < getRow(); i++) {
+            for (int j = 0; j < getCol(); j++) {
+                if (i != row && j != col) {
+                    mk.setElement(idx/mk.getRow(), idx%mk.getRow(), getElement(i, j));
+                    idx++;
+                }
+            }
+        }
+        return Math.pow(-1, row+col) * mk.getDeterminantCofactor();
+    }
+
+    public double getDeterminantCofactor() {
+        if (getRow() > 2) {
+            double det = 0;
+            for (int col = 0; col < getCol(); col++) {
+                det += getElement(0, col) * getCofactor(0, col);
+            }
+            return det;
+        } else if (getRow() == 2) {
+            return getElement(0, 0) * getElement(1, 1) - getElement(0, 1) * getElement(1, 0);
+        } else {
+            return getElement(0, 0);
+        }
     }
 
     private int getCol() {
