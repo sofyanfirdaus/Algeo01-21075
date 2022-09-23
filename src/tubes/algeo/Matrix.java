@@ -82,12 +82,12 @@ public class Matrix {
     }
 
     public Matrix matMul(Matrix others) {
-        Matrix result = new Matrix(getRow(), others.getRow());
+        Matrix result = new Matrix(getRow(), others.getCol());
         for (int i = 0; i < getRow(); i++) {
             for (int j = 0; j < others.getCol(); j++) {
                 double sum = 0;
                 for (int k = 0; k < getCol(); k++) {
-                    sum += data[i].getElement(k) * others.getMatrixData()[k].getElement(i);
+                    sum += data[i].getElement(k) * others.getMatrixData()[k].getElement(j);
                 }
                 result.setElements(i, j, sum);
             }
