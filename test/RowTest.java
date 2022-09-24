@@ -36,6 +36,7 @@ public class RowTest {
             new Row(new double[] { 9,5,8 })
         });
         System.out.println(m3.getDeterminantGauss());
-        m3.getInverseMatrixGaussJordan().matMul(m3).print();
+        m3.getInverseMatrixGaussJordan().print();
+        m3.getInverseMatrixAdj().print();
     }
 }

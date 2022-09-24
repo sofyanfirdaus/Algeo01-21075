@@ -16,3 +16,4 @@ TODO list
   - [x] method determinan (metode ekspansi kofaktor)
   - [x] method toString (buat debug)
   - [x] method inverse (metode OBE)
+  - [x] method inverse (rumus adjoint)

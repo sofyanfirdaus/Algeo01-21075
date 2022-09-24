@@ -104,6 +104,24 @@ public class Matrix {
         return result;
     }
 
+    public void multiply(double scalar) {
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length(); j++) {
+                setElement(i, j, getElement(i, j) * scalar);
+            }
+        }
+    }
+
+    public static Matrix multiply(Matrix m, double scalar) {
+        Matrix res = new Matrix(m.data);
+        for (int i = 0; i < m.data.length; i++) {
+            for (int j = 0; j < m.data[i].length(); j++) {
+                res.setElement(i, j, res.getElement(i, j) * scalar);
+            }
+        }
+        return res;
+    }
+
     public double getCofactor(int row, int col) {
         Matrix mk = new Matrix(getRow() - 1, getCol() - 1);
         int idx = 0;
@@ -177,6 +195,33 @@ public class Matrix {
         }
         Matrix res = new Matrix(n, n);
         res.setElements(ident);
+        return res;
+    }
+
+    public Matrix getInverseMatrixAdj() {
+        double det = getDeterminantGauss();
+        if (det == 0d) return null;
+        return Matrix.multiply(adj(this).transpose(), 1/det);
+    }
+
+    public static Matrix adj(Matrix m) {
+        int n = m.getRow(); // -> row = col
+        Matrix res = new Matrix(m.getRow(), m.getCol());
+        for(int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                res.setElement(i, j, m.getCofactor(i, j));
+            }
+        }
+        return res;
+    }
+
+    public Matrix transpose() {
+        Matrix res = new Matrix(getRow(), getCol());
+        for (int i = 0; i < getRow(); i++) {
+            for (int j = 0; j < getCol(); j++) {
+                res.setElement(i, j, getElement(j, i));
+            }
+        }
         return res;
     }
 
