@@ -10,6 +10,16 @@ public class Matrix {
         }
     }
 
+    public Matrix(Row[] data) {
+        this.data = new Row[data.length];
+        for (int i = 0; i < data.length; i++) {
+            this.data[i] = new Row(data[i].length());
+            for (int j = 0; j < data[i].length(); j++) {
+                this.data[i].setElement(j, data[i].getElement(j));
+            }
+        }
+    }
+
     public void setElements(Row[] matrix) {
         data = matrix;
     }
@@ -36,21 +46,24 @@ public class Matrix {
      * @return determinan matriks
      */
     public double getDeterminantGauss() {
-        Row[] triangleMatrix = getMatrixData();
+        double result = 1;
+        Row[] triangularMatrix = new Matrix(data).data;
         for (int j = 0; j < getCol() - 1; j++) {
             for (int i = j+1; i < getRow(); i++) {
-                double val = triangleMatrix[j].getElement(j);
+                double val = triangularMatrix[j].getElement(j);
                 if (val == 0) {
                     if (i - 1 == j) continue;
-                    else swap(triangleMatrix[i], triangleMatrix[j + 1]);
+                    else {
+                        swap(triangularMatrix[i], triangularMatrix[j + 1]);
+                        result *= -1;
+                    }
                 } else {
-                    triangleMatrix[i] = addMul(triangleMatrix[i], triangleMatrix[j], -triangleMatrix[i].getElement(j)/triangleMatrix[j].getElement(j));
+                    triangularMatrix[i] = addMul(triangularMatrix[i], triangularMatrix[j], -triangularMatrix[i].getElement(j)/triangularMatrix[j].getElement(j));
                 }
             }
         }
-        double result = 1;
-        for (int i = 0; i < triangleMatrix.length; i++) {
-            result *= triangleMatrix[i].getElement(i);
+        for (int i = 0; i < triangularMatrix.length; i++) {
+            result *= triangularMatrix[i].getElement(i);
         }
         return result;
     }
@@ -73,14 +86,6 @@ public class Matrix {
         Row result = new Row(A.length());
         for (int i = 0; i < result.length(); i++) {
             result.setElement(i, A.getElement(i) + B.getElement(i));
-        }
-        return result;
-    }
-
-    public Row multiply(double scalar, Row row) {
-        Row result = new Row(row.length());
-        for (int i = 0; i < result.length(); i++) {
-            result.setElement(i, scalar * row.getElement(i));
         }
         return result;
     }
@@ -127,6 +132,54 @@ public class Matrix {
         }
     }
 
+    public Matrix getInverseMatrixGaussJordan() {
+        int n = getRow();
+        Row[] ident = identityMatrix(getRow()).data;
+        Row[] mk = new Matrix(getMatrixData()).data;
+        // Create lower triangular matrix
+        for (int j = 0; j < n - 1; j++) {
+            for (int i = j+1; i < n; i++) {
+                double val = mk[j].getElement(j);
+                if (val == 0) {
+                    if (i - 1 == j) continue;
+                    else {
+                        swap(mk[i], mk[j + 1]);
+                        swap(ident[i], ident[j + 1]);
+                    }
+                } else {
+                    double t = -mk[i].getElement(j)/mk[j].getElement(j);
+                    mk[i] = addMul(mk[i], mk[j], t);
+                    ident[i] = addMul(ident[i], ident[j], t);
+                }
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            double val = 1/mk[i].getElement(i);
+            mk[i].multiply(val);
+            ident[i].multiply(val);
+        }
+        // Check inversibility
+        for (int i = 0; i < mk.length; i++) {
+           if (mk[i].getElement(i) == 0) return null;
+        }
+        // Create upper triangular matrix
+        for (int j = n - 1; j > 0; j--) {
+            for(int i = j - 1; i >= 0; i--) {
+                double t = -mk[i].getElement(j)/mk[j].getElement(j);
+                mk[i] = addMul(mk[i], mk[j], t);
+                ident[i] = addMul(ident[i], ident[j], t);
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            double val = 1/mk[i].getElement(i);
+            mk[i].multiply(val);
+            ident[i].multiply(val);
+        }
+        Matrix res = new Matrix(n, n);
+        res.setElements(ident);
+        return res;
+    }
+
     private int getCol() {
         return data[0].length();
     }
@@ -169,6 +222,14 @@ public class Matrix {
         }
         format += "]";
         return format;
+    }
+
+    public static Matrix identityMatrix(int n) {
+        Matrix ident = new Matrix(n, n);
+        for(int i = 0; i < n; i++) {
+            ident.setElement(i, i, 1);
+        }
+        return ident;
     }
 }
 

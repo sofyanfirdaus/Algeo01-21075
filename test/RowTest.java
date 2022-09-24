@@ -27,7 +27,15 @@ public class RowTest {
         m1 = m1.matMul(m2);
         m1.print();
 
-        System.out.println(m1.getDeterminantGauss());
         System.out.println(m1.getDeterminantCofactor());
+
+        Matrix m3 = new Matrix(3, 3);
+        m3.setElements(new Row[] {
+            new Row(new double[] { 1,6,2 }),
+            new Row(new double[] { 5,9,1 }),
+            new Row(new double[] { 9,5,8 })
+        });
+        System.out.println(m3.getDeterminantGauss());
+        m3.getInverseMatrixGaussJordan().matMul(m3).print();
     }
 }

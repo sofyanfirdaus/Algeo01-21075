@@ -15,3 +15,4 @@ TODO list
   - [x] method determinan (metode OBE)
   - [x] method determinan (metode ekspansi kofaktor)
   - [x] method toString (buat debug)
+  - [x] method inverse (metode OBE)
