@@ -1,6 +1,11 @@
-## Tugas Besar 1 IF2123 Aljabar Linear dan Geometri
+# Tugas Besar 1 IF2123 Aljabar Linear dan Geometri
 
-TODO list
+## Anggota Kelompok Sofazko
+1. 13521075 - Muhammad Rifko Favian
+2. 13521083 - Moch. Sofyan Firdaus
+3. 13521098 - Fazel Ginanda
+
+## TODO list
 - [ ] Bikin class Fraction supaya perhitungannya lebih presisi (opsional)
 - [x] Bikin class Row
   - [x] method selektor
