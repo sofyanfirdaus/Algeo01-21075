@@ -46,5 +46,7 @@ public class RowTest {
         Matrix m5 = new Matrix(m1.getMatrixData());
         m5.concatRow(m1);
         m5.print();
+
+        Matrix.subMatrix(m5, 2, 1, 3, 4).print();
     }
 }

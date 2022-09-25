@@ -322,6 +322,15 @@ public class Matrix {
         }
         return ident;
     }
+
+    public static Matrix subMatrix(Matrix m, int i, int j, int rows, int cols) {
+        Row[] sub = new Row[rows];
+        for (int k = 0; k < rows; k++) {
+            sub[k] = new Row(cols);
+            for (int l = 0; l < cols; l++) {
+                sub[k].setElement(l, m.getElement(i+k, j+l));
+            }
+        }
+        return new Matrix(sub);
+    }
 }
-
-
