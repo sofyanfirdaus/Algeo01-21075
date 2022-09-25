@@ -58,7 +58,7 @@ public class Row {
         int prevLength = length();
         expand(other.length());
         for (int i = prevLength; i < length(); i++) {
-            setElement(i, other.getElement(i));
+            setElement(i, other.getElement(i - prevLength));
         }
     }
 

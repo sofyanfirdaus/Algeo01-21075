@@ -42,12 +42,8 @@ public class Matrix {
             if (getRow() != other.getRow()) {
                 throw new Exception("both matrix must have same numbers of row");
             }
-            int prevCol = getCol();
-            expandCols(other.getCol());
             for (int i = 0; i < other.getRow(); i++) {
-                for (int j = 0; j < other.getCol(); j++) {
-                    setElement(i, prevCol + j, other.getElement(i, j));
-                }
+                data[i].concat(other.getMatrixData()[i]);
             }
         } catch(Exception e) {
             e.printStackTrace();
