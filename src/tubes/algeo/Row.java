@@ -5,8 +5,8 @@ import java.util.Locale;
 public class Row {
     private double[] data;
 
-    public Row(int n) {
-        data = new double[n];
+    public Row(int length) {
+        data = new double[length];
     }
 
     public Row(double[] elements) {
@@ -46,6 +46,20 @@ public class Row {
 
     public int length() {
         return data.length;
+    }
+
+    public void expand(int length) {
+        double[] newData = new double[length() + length];
+        System.arraycopy(data, 0, newData, 0, data.length);
+        data = newData;
+    }
+
+    public void concat(Row other) {
+        int prevLength = length();
+        expand(other.length());
+        for (int i = prevLength; i < length(); i++) {
+            setElement(i, other.getElement(i));
+        }
     }
 
     @Override

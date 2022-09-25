@@ -38,5 +38,13 @@ public class RowTest {
         System.out.println(m3.getDeterminantGauss());
         m3.getInverseMatrixGaussJordan().print();
         m3.getInverseMatrixAdj().print();
+
+        Matrix m4 = new Matrix(m3.getMatrixData());
+        m4.concatCols(m3);
+        m4.print();
+
+        Matrix m5 = new Matrix(m1.getMatrixData());
+        m5.concatRow(m1);
+        m5.print();
     }
 }

@@ -20,6 +20,56 @@ public class Matrix {
         }
     }
 
+    public void concatRow(Matrix other) {
+        try {
+            if (getCol() != other.getCol()) {
+                throw new Exception("both matrix must have same numbers of column");
+            }
+            int prevRow = getRow();
+            expandRows(other.getRow());
+            for (int i = 0; i < other.getRow(); i++) {
+                for (int j = 0; j < other.getCol(); j++) {
+                    setElement(prevRow + i, j, other.getElement(i, j));
+                }
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void concatCols(Matrix other) {
+        try {
+            if (getRow() != other.getRow()) {
+                throw new Exception("both matrix must have same numbers of row");
+            }
+            int prevCol = getCol();
+            expandCols(other.getCol());
+            for (int i = 0; i < other.getRow(); i++) {
+                for (int j = 0; j < other.getCol(); j++) {
+                    setElement(i, prevCol + j, other.getElement(i, j));
+                }
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void expandRows(int length) {
+        int prevRow = getRow();
+        Row[] newData = new Row[getRow() + length];
+        System.arraycopy(data, 0, newData, 0, getRow());
+        data = newData;
+        for (int i = prevRow; i < getRow(); i++) {
+            data[i] = new Row(getCol());
+        }
+    }
+
+    public void expandCols(int length) {
+        for (Row row : data) {
+            row.expand(length);
+        }
+    }
+
     public void setElements(Row[] matrix) {
         data = matrix;
     }

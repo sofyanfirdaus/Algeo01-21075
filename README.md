@@ -17,3 +17,8 @@ TODO list
   - [x] method toString (buat debug)
   - [x] method inverse (metode OBE)
   - [x] method inverse (rumus adjoint)
+- [ ] SPL
+  - [ ] metode Gauss
+  - [ ] metode Gauss-Jordan
+  - [ ] metode Cramer
+  - [ ] metode inverse
