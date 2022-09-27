@@ -333,4 +333,14 @@ public class Matrix {
         }
         return new Matrix(sub);
     }
+  
+  public static Matrix from(double[][] data) {
+    Matrix m = new Matrix(data.length, data[0].length);
+    for (int i = 0; i < m.getRow(); i++) {
+      for (int j = 0; j < m.getCol(); j++) {
+        m.setElement(i, j, data[i][j]);
+      }
+    }
+    return m;
+  }
 }
