@@ -316,37 +316,7 @@ public class Matrix {
         double t = -mk.getElement(i, j) / mk.getElement(pivotRow, j);
         mk.data[i] = addMul(mk.data[i], mk.data[pivotRow], t);
       }
-      // for(int i = n - 1; i >= 0; i--) {
-      //   if (mk.getElement(i, j) != 0) {
-      //     double t = -mk.getElement(i, j)/mk.getElement(j, j);
-      //     mk.data[i] = addMul(mk.data[i], mk.data[j], t);
-      //   } else {
-      //     boolean ok = false;
-      //     for (int k = i-1; k > 0 && !ok; k--) {
-      //       if (mk.getElement(k, j) != 0) {
-      //         for (int l = k-1; l >= 0; l--) {
-      //           double t = -mk.getElement(l, j) / mk.getElement(k, j);
-      //           mk.data[l] = addMul(mk.data[l], mk.data[k], t);
-      //         }
-      //         ok = true;
-      //       }
-      //     }
-      //   }
-      // }
     }
-    // for(int i = 0; i < n; i++) {
-    //   if (mk.getElement(i, i) != 0) {
-    //     mk.data[i].multiply(1/mk.getElement(i, i));
-    //   } else {
-    //     boolean ok = false;
-    //     for(int j = 0; j < mk.getCol() && !ok; j++) {
-    //       if(mk.getElement(i, j) != 0) {
-    //         mk.data[i].multiply(1 / mk.getElement(i, i));
-    //         ok = true;
-    //       }
-    //     }
-    //   }
-    // }
     return mk;
   }
 
