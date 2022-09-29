@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="tubes.algeo.AppTest" time="0.087" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="18"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\Users\msfir\Documents\Java\Tubes\Algeo01-21075\bin\test-classes;C:\Users\msfir\Documents\Java\Tubes\Algeo01-21075\bin\classes;C:\Users\msfir\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\msfir\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="Asia/Jakarta"/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="java.vm.specification.version" value="18"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="ID"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\openjdk-18.0.2.1\bin"/>
+    <property name="sun.java.command" value="C:\Users\msfir\AppData\Local\Temp\surefire8256600812660221553\surefirebooter15461929557469199426.jar C:\Users\msfir\AppData\Local\Temp\surefire8256600812660221553 2022-09-29T16-16-06_915-jvmRun1 surefire3626925379197923979tmp surefire_0462801482939101262tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\msfir\Documents\Java\Tubes\Algeo01-21075\bin\test-classes;C:\Users\msfir\Documents\Java\Tubes\Algeo01-21075\bin\classes;C:\Users\msfir\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\msfir\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\msfir"/>
+    <property name="user.language" value="id"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2022-08-18"/>
+    <property name="java.home" value="C:\Program Files\Java\openjdk-18.0.2.1"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\msfir\Documents\Java\Tubes\Algeo01-21075"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\msfir\AppData\Local\Temp\surefire8256600812660221553\surefirebooter15461929557469199426.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="18.0.2.1+1-1"/>
+    <property name="user.name" value="msfir"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="C:\Users\msfir\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="C:\Users\msfir\AppData\Local\Temp\"/>
+    <property name="java.version" value="18.0.2.1"/>
+    <property name="user.dir" value="C:\Users\msfir\Documents\Java\Tubes\Algeo01-21075"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\openjdk-18.0.2.1\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Lapce\;C:\Users\msfir\scoop\apps\mingw-winlibs-llvm\current\bin;C:\Program Files\Java\openjdk-18.0.2.1\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Users\msfir\AppData\Local\Programs\Python\Python310;C:\Program Files\Microsoft Network Monitor 3\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Program Files\Go\bin;C:\Users\msfir\AppData\Local\nvim-data\mason\bin;C:\Users\msfir\scoop\apps\nodejs\current\bin;C:\Users\msfir\scoop\apps\nodejs\current;C:\Users\msfir\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\msfir\shell;C:\Program Files\Neovim\bin;C:\Users\msfir\scoop\apps\maven\current\bin;C:\Users\msfir\scoop\apps\mingw-winlibs-llvm\current\bin;C:\Users\msfir\scoop\apps\openssl-mingw\current\bin;C:\Users\msfir\scoop\shims;C:\Program Files\Java\openjdk-18.0.2.1\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\chocolatey\bin;C:\Users\msfir\AppData\Local\Programs\Python\Python310;C:\Program Files\Microsoft Network Monitor 3\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Program Files\Go\bin;C:\Users\msfir\scoop\apps\miniconda3\current\scripts;C:\Users\msfir\scoop\apps\miniconda3\current\Library\bin;C:\Program Files\Git\usr\bin;C:\Users\msfir\.cargo\bin;C:\Users\msfir\scoop\apps\neovim\current\bin;C:\Program Files\Neovim\bin;C:\Users\msfir\AppData\Local\nvim-data/mason/bin;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="18.0.2.1+1-1"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="62.0"/>
+  </properties>
+  <testcase name="shouldAnswerWithTrue" classname="tubes.algeo.AppTest" time="0.012"/>
+</testsuite>

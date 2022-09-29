@@ -15,5 +15,9 @@ public class Main {
     });
     m.getEchelon().print();
     m.getReductedEchelon().print();
+
+    Expr a = new Expr(-4, Expr.var("x", 3), Expr.var("y", -2), Expr.var("z", -1));
+    Expr b = new Expr(2, Expr.var("x", 1), Expr.var("z", 2), Expr.var("w", 4));
+    System.out.println(Expr.add(a, b));
   }
 }
