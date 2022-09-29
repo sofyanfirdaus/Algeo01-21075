@@ -236,7 +236,7 @@ public class Matrix {
     return res;
   }
 
-  private int getCol() {
+  public int getCol() {
     return data[0].length();
   }
 
@@ -249,7 +249,6 @@ public class Matrix {
     int m = getCol();
     Matrix mk = new Matrix(getMatrixData());
     int pivotRow = 0;
-    int pivotCol = 0;
 
     for (int j = 0; j < m; j++) {
       // find non-zero column
@@ -258,11 +257,10 @@ public class Matrix {
         zero = mk.getElement(i, j) == 0;
       }
       if (zero) {
-        pivotCol++;
         continue;
       }
       for (int i = pivotRow; i < n - 1; i++) {
-        double pivotVal = mk.getElement(pivotRow, pivotCol);
+        double pivotVal = mk.getElement(pivotRow, j);
         if (pivotVal == 0) {
           // find row to swap
           for (int k = pivotRow+1; k < n; k++) {
@@ -271,12 +269,11 @@ public class Matrix {
             }
           }
         } else {
-          double t = -mk.getElement(i+1, j)/mk.getElement(j, j);
-          mk.data[i+1] = addMul(mk.data[i+1], mk.data[j], t);
+          double t = -mk.getElement(i+1, j)/mk.getElement(pivotRow, j);
+          mk.data[i+1] = addMul(mk.data[i+1], mk.data[pivotRow], t);
         }
       }
       pivotRow++;
-      pivotCol++;
     }
     for(int i = 0; i < n; i++) {
       if (mk.getElement(i, i) != 0) {

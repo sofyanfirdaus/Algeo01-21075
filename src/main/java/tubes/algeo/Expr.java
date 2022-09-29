@@ -11,7 +11,9 @@ public class Expr {
     // avoid passing by reference
     this.variables = new ArrayList<Var>();
     for (Var var: variables) {
-      this.variables.add(Expr.var(var.getName(), var.getCoefficient()));
+      if (var.getCoefficient() != 0) {
+        this.variables.add(Expr.var(var.getName(), var.getCoefficient()));
+      }
     }
     this.constant = constant;
   }
@@ -26,7 +28,7 @@ public class Expr {
 
   public Var getVariable(String name) {
     for (Var var: variables) {
-      if (var.name == name) {
+      if (var.name.equals(name)) {
         return var;
       }
     }
@@ -65,7 +67,7 @@ public class Expr {
         }
       }
       if (!found) {
-        variables.add(other.variables.get(i));
+        variables.add(new Var(other.variables.get(i).name, -other.variables.get(i).coeff));
       }
     }
     constant -= other.constant;
