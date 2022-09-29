@@ -29,20 +29,21 @@ public class Main {
     // System.out.println(a + " = " + b);
     // System.out.println(LinearEquationSolver.solve(a, b, "x", valueMap));
     // System.out.println(Expr.multiply(a, 2));
-    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGauss(
-      Matrix.from(new double[][] {
-        { 5, 10, 6, 15, 4, 3, 24, 12, -9, 8, 72 },
-        { 5, 0, 0, 5, 2, 4, 0, 3, 0, 4, 42 },
-        { 9, 1, 0, 0, 0, 0, 3, 8, 7, 5, 25 },
-        { 3, 5, 7, 1, 2, 5, 9, 7, 4, 1, 5 },
-        { 2, 3, 4, 2, 3, 8, 7, 0, 4, 2, 3 },
-        { 2, 0, 6, 8, 5, 2, 3, 5, 7, 0, 6 },
-        { 5, 2, 2, 0, 21, 5, 8, 7, 5, 2, 3 },
-        { 3, 3, 3, 5, 8, 7, 1, 1, 5, 6, 3 },
-        { 8, 0, 9, 8, 7, 0, 8, 5, 2, 1, 5 },
-        { 1, 5, 8, 5, 6, 3, 5, 7, 8, 9, 10 }
-      })
-    );
-    System.out.println(solution);
+    Matrix system = Matrix.from(new double[][] {
+    { 5, 10, 6, 15, 4, 3, 24, 12, -9, 8, 72 },
+    { 5, 0, 0, 5, 2, 4, 0, 3, 0, 4, 42 },
+    { 9, 1, 0, 0, 0, 0, 3, 8, 7, 5, 25 },
+    { 3, 5, 7, 1, 2, 5, 9, 7, 4, 1, 5 },
+    { 2, 3, 4, 2, 3, 8, 7, 0, 4, 2, 3 },
+    { 2, 0, 6, 8, 5, 2, 3, 5, 7, 0, 6 },
+    { 5, 2, 2, 0, 21, 5, 8, 7, 5, 2, 3 },
+    { 3, 3, 3, 5, 8, 7, 1, 1, 5, 6, 3 },
+    { 8, 0, 9, 8, 7, 0, 8, 5, 2, 1, 5 },
+    { 1, 5, 8, 5, 6, 3, 5, 7, 8, 9, 10 }
+    });
+    HashMap<String, Expr> solution1 = LinearEquationSolver.solveSystemGauss(system);
+    HashMap<String, Expr> solution2 = LinearEquationSolver.solveSystemGaussJordan(system);
+    System.out.println(solution1);
+    System.out.println(solution2);
   }
 }
