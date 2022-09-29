@@ -11,9 +11,26 @@ public class Expr {
     // avoid passing by reference
     this.variables = new ArrayList<Var>();
     for (Var var: variables) {
-      this.variables.add(var);
+      this.variables.add(Expr.var(var.getName(), var.getCoefficient()));
     }
     this.constant = constant;
+  }
+
+  public double getConstant() {
+    return constant;
+  }
+
+  public ArrayList<Var> getVariables() {
+    return variables;
+  }
+
+  public Var getVariable(String name) {
+    for (Var var: variables) {
+      if (var.name == name) {
+        return var;
+      }
+    }
+    return null;
   }
 
   public void add(Expr other) {
@@ -22,6 +39,9 @@ public class Expr {
       for (int j = 0; j < variables.size(); j++) {
         if (variables.get(j).name == other.variables.get(i).name) {
           variables.get(j).coeff += other.variables.get(i).coeff;
+          if (variables.get(j).coeff == 0) {
+            variables.remove(j);
+          }
           found = true;
         }
       }
@@ -38,6 +58,9 @@ public class Expr {
       for (int j = 0; j < variables.size(); j++) {
         if (variables.get(j).name == other.variables.get(i).name) {
           variables.get(j).coeff -= other.variables.get(i).coeff;
+          if (variables.get(j).coeff == 0) {
+            variables.remove(j);
+          }
           found = true;
         }
       }
@@ -46,6 +69,13 @@ public class Expr {
       }
     }
     constant -= other.constant;
+  }
+
+  public void multiply(double n) {
+    variables.forEach((var) -> {
+      var.coeff *= n;
+    });
+    constant *= n;
   }
 
   public static Expr add(Expr a, Expr b) {
@@ -58,7 +88,12 @@ public class Expr {
     Expr c = new Expr(a.constant, a.variables.toArray(new Var[a.variables.size()]));
     c.subtract(b);
     return c;
+  }
 
+  public static Expr multiply(Expr expr, double n) {
+    Expr c = new Expr(expr.constant, expr.variables.toArray(new Var[expr.variables.size()]));
+    c.multiply(n);
+    return c;
   }
 
   public static Var var(String name, double coeff) {
@@ -72,12 +107,15 @@ public class Expr {
       if (i > 0) s += variables.get(i).toString() != "" ? "+" : "";
       s += variables.get(i).toString();
     }
+    String formConst = String.format("%.2f", constant);
+    formConst = formConst.replaceAll("0*$", "").replaceAll("\\.$", "").replaceAll("\\,$", "");
     if (constant != 0) {
-      String formConst = String.format("%.2f", constant);
-      formConst = formConst.replaceAll("0*$", "").replaceAll("\\.$", "").replaceAll("\\,$", "");
       s += "+" + formConst;
     }
-    return s.replace("+-", "-").replace("+", " + ").replace("-", " - ");
+    if (variables.size() == 0) {
+      return formConst;
+    }
+    return s.replace("+-", "-").replace("+", " + ").replace("-", " - ").trim().replaceAll("^- ", "-");
   }
 
   public static class Var {
@@ -88,6 +126,14 @@ public class Expr {
     public Var(String name, double coeff) {
       this.name = name;
       this.coeff = coeff;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public double getCoefficient() {
+      return coeff;
     }
 
     @Override
