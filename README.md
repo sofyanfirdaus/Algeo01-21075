@@ -23,7 +23,18 @@
   - [x] method inverse (metode OBE)
   - [x] method inverse (rumus adjoint)
 - [ ] SPL
-  - [ ] metode Gauss
-  - [ ] metode Gauss-Jordan
+  - [x] metode Gauss
+  - [x] metode Gauss-Jordan
   - [ ] metode Cramer
   - [ ] metode inverse
+- [ ] Studi Kasus
+  - [ ] Persoalan SPL
+  - [ ] Interpolasi Polinom
+  - [ ] Interpolasi Bicubic
+  - [ ] Regresi Linear Berganda
+- [ ] Laporan Praktikum
+  - [ ] BAB 1
+  - [ ] BAB 2
+  - [ ] BAB 3
+  - [ ] BAB 4
+  - [ ] BAB 5

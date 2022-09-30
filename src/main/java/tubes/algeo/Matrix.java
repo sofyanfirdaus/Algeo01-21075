@@ -382,6 +382,7 @@ public class Matrix {
     return m;
   }
 
+  // Sementara di sini dulu
   public static void readFile(Matrix m) {
     Scanner input = new Scanner(System.in);
     int Row,Col,i,j;
