@@ -243,6 +243,16 @@ public class Matrix {
     return res;
   }
 
+  public boolean equals(Matrix other) {
+    boolean equal = getRow() == other.getRow() && getCol() == other.getCol();
+    for (int i = 0; i < getRow() && equal; i++) {
+      for (int j = 0; j < getCol() && equal; j++) {
+        equal = getElement(i, j) == other.getElement(i, j);
+      }
+    }
+    return equal;
+  }
+
   public Matrix transpose() {
     Matrix res = new Matrix(getRow(), getCol());
     for (int i = 0; i < getRow(); i++) {
