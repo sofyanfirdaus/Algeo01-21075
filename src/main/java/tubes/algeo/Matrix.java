@@ -338,19 +338,6 @@ public class Matrix {
     return data.length;
   }
 
-  public void print() {
-    System.out.println("[");
-    for (Row ds : data) {
-      System.out.print("[");
-      int i;
-      for (i = 0; i < ds.getData().length - 1; i++) {
-        System.out.print(String.format("%8.2f ", ds.getElement(i)));
-      }
-      System.out.println(String.format("%8.2f]", ds.getElement(i)));
-    }
-    System.out.println("]");
-  }
-
   @Override
   public String toString() {
     String format = "[";
