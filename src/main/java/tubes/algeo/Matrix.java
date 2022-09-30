@@ -255,7 +255,7 @@ public class Matrix {
     boolean equal = getRow() == other.getRow() && getCol() == other.getCol();
     for (int i = 0; i < getRow() && equal; i++) {
       for (int j = 0; j < getCol() && equal; j++) {
-        equal = getElement(i, j) == other.getElement(i, j);
+        equal = Math.abs(getElement(i, j) - other.getElement(i, j)) <= .0001d;;
       }
     }
     return equal;
@@ -424,7 +424,7 @@ public class Matrix {
       String checkpath = "../test/";
       File file = new File(checkpath+nama);
       System.out.println(file.getAbsolutePath());
-      
+
       Scanner CountRow = new Scanner(file);
       Row = 0;
       while (CountRow.hasNextLine()){
@@ -462,7 +462,7 @@ public class Matrix {
       m = temp;
       System.out.println("Matrix yang terbaca dari file adalah :");
       m.print();
-    } 
+    }
     catch (FileNotFoundException e) {
       System.out.println("File tidak ada atau nama yang dimasukkan salah.");
       e.printStackTrace();
