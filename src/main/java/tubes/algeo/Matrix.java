@@ -326,6 +326,7 @@ public class Matrix {
   }
 
   public void print() {
+    System.out.println("[");
     for (Row ds : data) {
       System.out.print("[");
       int i;
@@ -334,6 +335,7 @@ public class Matrix {
       }
       System.out.println(String.format("%8.2f]", ds.getElement(i)));
     }
+    System.out.println("]");
   }
 
   @Override
@@ -380,7 +382,7 @@ public class Matrix {
     return m;
   }
 
-  public void readFile (){
+  public static void readFile(Matrix m) {
     Scanner input = new Scanner(System.in);
     int Row,Col,i,j;
 
@@ -425,8 +427,9 @@ public class Matrix {
         i += 1;
       }
       MatrixRow.close();
+      m = temp;
       System.out.println("Matrix yang terbaca dari file adalah :");
-      temp.print();
+      m.print();
     } 
     catch (FileNotFoundException e) {
       System.out.println("File tidak ada atau nama yang dimasukkan salah.");
