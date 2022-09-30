@@ -32,7 +32,7 @@
   - [ ] Interpolasi Polinom
   - [ ] Interpolasi Bicubic
   - [ ] Regresi Linear Berganda
-- [ ] Laporan Praktikum
+- [ ] Laporan
   - [ ] BAB 1
   - [ ] BAB 2
   - [ ] BAB 3
