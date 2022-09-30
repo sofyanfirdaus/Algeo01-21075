@@ -44,9 +44,11 @@ public class Main {
     HashMap<String, Expr> solution1 = LinearEquationSolver.solveSystemGauss(system);
     HashMap<String, Expr> solution2 = LinearEquationSolver.solveSystemGaussJordan(system);
     HashMap<String, Expr> solution3 = LinearEquationSolver.solveSystemCramer(system);
+    HashMap<String, Expr> solution4 = LinearEquationSolver.solveSystemInverse(system);
     System.out.println(solution1);
     System.out.println(solution2);
     System.out.println(solution3);
+    System.out.println(solution4);
     System.out.println(system);
   }
 }

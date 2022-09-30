@@ -22,11 +22,11 @@
   - [x] method toString (buat debug)
   - [x] method inverse (metode OBE)
   - [x] method inverse (rumus adjoint)
-- [ ] SPL
+- [x] SPL
   - [x] metode Gauss
   - [x] metode Gauss-Jordan
   - [x] metode Cramer
-  - [ ] metode inverse
+  - [x] metode inverse
 - [ ] Studi Kasus
   - [ ] Persoalan SPL
   - [ ] Interpolasi Polinom

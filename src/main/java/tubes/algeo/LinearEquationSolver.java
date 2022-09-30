@@ -102,7 +102,7 @@ public class LinearEquationSolver {
     }
 
     HashMap<String, Expr> solution = new HashMap<>();
-    
+
     // clone matrix
     Matrix sys = new Matrix(augmentedMatrix.getMatrixData()).getReductedEchelon();
 
@@ -168,5 +168,31 @@ public class LinearEquationSolver {
     }
 
     return solution;
+  }
+
+  public static HashMap<String, Expr> solveSystemInverse(Matrix augmentedMatrix) {
+    Matrix lhs = Matrix.subMatrix(augmentedMatrix, 0, 0, augmentedMatrix.getRow(), augmentedMatrix.getCol() - 1);
+    Matrix rhs = new Matrix(lhs.getRow(), 1);
+
+    for (int i = 0; i < rhs.getRow(); i++) {
+      rhs.setElement(i, 0, augmentedMatrix.getElement(i, augmentedMatrix.getCol() - 1));
+    }
+
+    Matrix inverse = lhs.getInverseMatrixGaussJordan();
+
+    if (inverse != null) {
+      Matrix msol = inverse.matMul(rhs);
+
+      HashMap<String, Expr> solution = new HashMap<>();
+
+      for (int i = 0; i < msol.getRow(); i++) {
+        Expr sol = new Expr(msol.getElement(i, 0));
+        solution.put("x" + (i+1), sol);
+      }
+
+      return solution;
+    }
+
+    return null;
   }
 }

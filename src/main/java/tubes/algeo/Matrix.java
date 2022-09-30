@@ -8,10 +8,10 @@ import java.io.FileNotFoundException;
 public class Matrix {
   private Row[] data;
 
-  public Matrix(int baris, int kolom) {
-    this.data = new Row[baris];
+  public Matrix(int row, int column) {
+    this.data = new Row[row];
     for (int i = 0; i < data.length; i++) {
-      data[i] = new Row(kolom);
+      data[i] = new Row(column);
     }
   }
 
@@ -88,7 +88,7 @@ public class Matrix {
     data = matrix;
   }
 
-  private void setElement(int i, int j, double value) {
+  public void setElement(int i, int j, double value) {
     data[i].setElement(j, value);
   }
 
@@ -224,7 +224,15 @@ public class Matrix {
     int n = getRow();
     Matrix mc = new Matrix(getMatrixData());
     mc.concatCols(identityMatrix(n));
-    return subMatrix(mc.getReductedEchelon(), 0, n, n, n);
+    mc = mc.getReductedEchelon();
+
+    Matrix leftSide = Matrix.subMatrix(mc, 0, 0, n, n);
+
+    if (leftSide.equals(Matrix.identityMatrix(n))) {
+      return subMatrix(mc.getReductedEchelon(), 0, n, n, n);
+    }
+
+    return null;
   }
 
   public Matrix getInverseMatrixAdj() {
@@ -242,6 +250,16 @@ public class Matrix {
       }
     }
     return res;
+  }
+
+  public boolean equals(Matrix other) {
+    boolean equal = getRow() == other.getRow() && getCol() == other.getCol();
+    for (int i = 0; i < getRow() && equal; i++) {
+      for (int j = 0; j < getCol() && equal; j++) {
+        equal = Math.abs(getElement(i, j) - other.getElement(i, j)) <= .0001d;;
+      }
+    }
+    return equal;
   }
 
   public Matrix transpose() {
@@ -407,7 +425,7 @@ public class Matrix {
       String checkpath = "../test/";
       File file = new File(checkpath+nama);
       System.out.println(file.getAbsolutePath());
-      
+
       Scanner CountRow = new Scanner(file);
       Row = 0;
       while (CountRow.hasNextLine()){
@@ -444,12 +462,14 @@ public class Matrix {
       MatrixRow.close();
       m = temp;
       System.out.println("Matrix yang terbaca dari file adalah :");
-      m.print();
-    } 
+      System.out.println(m);
+    }
     catch (FileNotFoundException e) {
       System.out.println("File tidak ada atau nama yang dimasukkan salah.");
       e.printStackTrace();
+      input.close();
       System.exit(0);
     }
+    input.close();
   }
 }
