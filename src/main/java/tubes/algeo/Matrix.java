@@ -223,7 +223,15 @@ public class Matrix {
     int n = getRow();
     Matrix mc = new Matrix(getMatrixData());
     mc.concatCols(identityMatrix(n));
-    return subMatrix(mc.getReductedEchelon(), 0, n, n, n);
+    mc = mc.getReductedEchelon();
+
+    Matrix leftSide = Matrix.subMatrix(mc, 0, 0, n, n);
+
+    if (leftSide.equals(Matrix.identityMatrix(n))) {
+      return subMatrix(mc.getReductedEchelon(), 0, n, n, n);
+    }
+
+    return null;
   }
 
   public Matrix getInverseMatrixAdj() {
