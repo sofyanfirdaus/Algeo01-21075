@@ -25,7 +25,7 @@
 - [ ] SPL
   - [x] metode Gauss
   - [x] metode Gauss-Jordan
-  - [ ] metode Cramer
+  - [x] metode Cramer
   - [ ] metode inverse
 - [ ] Studi Kasus
   - [ ] Persoalan SPL
