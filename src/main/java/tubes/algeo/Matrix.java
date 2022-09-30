@@ -1,5 +1,9 @@
 package tubes.algeo;
 
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public class Matrix {
   private Row[] data;
 
@@ -322,7 +326,6 @@ public class Matrix {
   }
 
   public void print() {
-    System.out.println("[");
     for (Row ds : data) {
       System.out.print("[");
       int i;
@@ -331,7 +334,6 @@ public class Matrix {
       }
       System.out.println(String.format("%8.2f]", ds.getElement(i)));
     }
-    System.out.println("]");
   }
 
   @Override
@@ -376,5 +378,60 @@ public class Matrix {
       }
     }
     return m;
+  }
+
+  public void readFile (){
+    Scanner input = new Scanner(System.in);
+    int Row,Col,i,j;
+
+    try {
+      System.out.print("Tulis nama filenya : ");
+      String nama = input.next();
+      String checkpath = "../test/";
+      File file = new File(checkpath+nama);
+      System.out.println(file.getAbsolutePath());
+      
+      Scanner CountRow = new Scanner(file);
+      Row = 0;
+      while (CountRow.hasNextLine()){
+        CountRow.nextLine();
+        Row += 1;
+      }
+      CountRow.close();
+
+      Scanner CekBaris = new Scanner(file);
+      Col = 0;
+      if (CekBaris.hasNextLine()){
+        Scanner CountCol = new Scanner(CekBaris.nextLine());
+        while (CountCol.hasNextDouble()){
+          CountCol.nextDouble();
+          Col += 1;
+        }
+        CountCol.close();
+      }
+      CekBaris.close();
+      Matrix temp = new Matrix(Row,Col);
+
+      Scanner MatrixRow = new Scanner(file);
+      i = 0;
+      while (MatrixRow.hasNextLine()){
+        Scanner MatrixCol = new Scanner(MatrixRow.nextLine());
+        j = 0;
+        while (MatrixCol.hasNextDouble()){
+          temp.setElement(i,j,MatrixCol.nextDouble());
+          j += 1;
+        }
+        MatrixCol.close();
+        i += 1;
+      }
+      MatrixRow.close();
+      System.out.println("Matrix yang terbaca dari file adalah :");
+      temp.print();
+    } 
+    catch (FileNotFoundException e) {
+      System.out.println("File tidak ada atau nama yang dimasukkan salah.");
+      e.printStackTrace();
+      System.exit(0);
+    }
   }
 }

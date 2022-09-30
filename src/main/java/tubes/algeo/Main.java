@@ -45,5 +45,8 @@ public class Main {
     HashMap<String, Expr> solution2 = LinearEquationSolver.solveSystemGaussJordan(system);
     System.out.println(solution1);
     System.out.println(solution2);
+
+    Matrix test = new Matrix(0,0);
+    test.readFile();
   }
 }
