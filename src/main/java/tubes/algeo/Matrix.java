@@ -7,10 +7,10 @@ import java.io.FileNotFoundException;
 public class Matrix {
   private Row[] data;
 
-  public Matrix(int baris, int kolom) {
-    this.data = new Row[baris];
+  public Matrix(int row, int column) {
+    this.data = new Row[row];
     for (int i = 0; i < data.length; i++) {
-      data[i] = new Row(kolom);
+      data[i] = new Row(column);
     }
   }
 
@@ -87,7 +87,7 @@ public class Matrix {
     data = matrix;
   }
 
-  private void setElement(int i, int j, double value) {
+  public void setElement(int i, int j, double value) {
     data[i].setElement(j, value);
   }
 
