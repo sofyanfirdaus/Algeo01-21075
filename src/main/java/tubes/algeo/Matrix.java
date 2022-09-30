@@ -54,6 +54,19 @@ public class Matrix {
     }
   }
 
+  public void replaceColumn(int idx, double... data) {
+    try {
+      if (data.length != getRow()) {
+        throw new IllegalArgumentException("the length of the data must be the same as the length of the row");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    for (int i = 0; i < data.length; i++) {
+      setElement(i, idx, data[i]);
+    }
+  }
+
   public void expandRows(int length) {
     int prevRow = getRow();
     Row[] newData = new Row[getRow() + length];
