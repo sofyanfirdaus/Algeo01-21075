@@ -1,5 +1,6 @@
 package tubes.algeo;
 
+import java.util.Locale;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -340,17 +341,30 @@ public class Matrix {
 
   @Override
   public String toString() {
-    String format = "[";
-    for (Row ds : data) {
-      format += "[";
-      int i;
-      for (i = 0; i < ds.getData().length - 1; i++) {
-        format += String.format("%8.2f ", ds.getElement(i));
+    int[] align = new int[getCol()];
+    for (int j = 0; j < getCol(); j++) {
+      int max = 0;
+      for (int i = 0; i < getRow(); i++) {
+        int chars = String.valueOf(data[i].getElement(j)).length();
+        if (max < chars) {
+          max = chars;
+        }
       }
-      format += String.format("%8.2f]", ds.getElement(i));
+      align[j] = max;
     }
-    format += "]";
-    return format;
+    String str = "[";
+    for (int i = 0; i < getRow(); i++) {
+      if (i > 0) str += "\n ";
+      str += "[";
+      for (int j = 0; j < getCol(); j++) {
+        String format = "%" + (align[j]+2) + ".2f";
+        if (j > 0) str += ", ";
+        str += String.format(Locale.US, format, getElement(i, j)).replaceAll("0*$", "").replaceAll("\\.$", "");
+      }
+      str += "]";
+    }
+    str += "]";
+    return str;
   }
 
   public static Matrix identityMatrix(int n) {

@@ -36,7 +36,7 @@ public class Main {
     { 3, 5, 7, 1, 2, 5, 9, 7, 4, 1, 5 },
     { 2, 3, 4, 2, 3, 8, 7, 0, 4, 2, 3 },
     { 2, 0, 6, 8, 5, 2, 3, 5, 7, 0, 6 },
-    { 5, 2, 2, 0, 21, 5, 8, 7, 5, 2, 3 },
+    { 5, 2, 2, 0, 21, 5, 8, 70000, 5, 2, 3 },
     { 3, 3, 3, 5, 8, 7, 1, 1, 5, 6, 3 },
     { 8, 0, 9, 8, 7, 0, 8, 5, 2, 1, 5 },
     { 1, 5, 8, 5, 6, 3, 5, 7, 8, 9, 10 }
@@ -47,5 +47,6 @@ public class Main {
     System.out.println(solution1);
     System.out.println(solution2);
     System.out.println(solution3);
+    System.out.println(system);
   }
 }

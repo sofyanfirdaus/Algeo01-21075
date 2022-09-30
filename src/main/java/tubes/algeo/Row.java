@@ -64,9 +64,10 @@ public class Row {
 
     @Override
     public String toString() {
-        String s = "[ ";
-        for (double d : data) {
-           s += String.format(Locale.US, "%.2f ", d);
+        String s = "[";
+        for (int i = 0; i < length(); i++) {
+            if (i > 0) s += ", ";       
+            s += String.format(Locale.US, "%.2f ", data[i]);
         }
         s += "]";
         return s;

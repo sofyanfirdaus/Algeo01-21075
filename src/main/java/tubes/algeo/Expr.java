@@ -1,6 +1,7 @@
 package tubes.algeo;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Expr {
 
@@ -107,10 +108,10 @@ public class Expr {
     String s = "";
     for (int i = 0; i < variables.size(); i++) {
       if (i > 0) s += variables.get(i).toString() != "" ? "+" : "";
-      s += variables.get(i).toString();
+      s += variables.get(i);
     }
-    String formConst = String.format("%.2f", constant);
-    formConst = formConst.replaceAll("0*$", "").replaceAll("\\.$", "").replaceAll("\\,$", "");
+    String formConst = String.format(Locale.US, "%.2f", constant);
+    formConst = formConst.replaceAll("0*$", "").replaceAll("\\.$", "");
     if (constant != 0) {
       s += "+" + formConst;
     }
@@ -145,8 +146,8 @@ public class Expr {
         return s;
       }
       if (Math.abs(coeff - 1) > 0.001d) {
-        s = String.format("%.2f", coeff);
-        s = s.replaceAll("0*$", "").replaceAll("\\.$", "").replaceAll("\\,$", "");
+        s = String.format(Locale.US, "%.2f", coeff);
+        s = s.replaceAll("0*$", "").replaceAll("\\.$", "");
       }
       s += name;
       return s;
