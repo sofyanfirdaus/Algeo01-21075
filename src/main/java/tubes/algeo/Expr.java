@@ -85,7 +85,7 @@ public class Expr {
     return new Var(name, coeff, degree);
   }
 
-  private ArrayList<Var>  variables;
+  private ArrayList<Var> variables;
 
   private double constant;
 
@@ -121,9 +121,11 @@ public class Expr {
     for (int i = 0; i < other.variables.size(); i++) {
       boolean found = false;
       for (int j = 0; j < variables.size(); j++) {
-        if (variables.get(j).name == other.variables.get(i).name) {
-          variables.get(j).coeff += other.variables.get(i).coeff;
-          if (variables.get(j).coeff == 0) {
+        Var var = variables.get(j);
+        Var var2 = other.variables.get(i);
+        if (var.name == var2.name && var.degree == var2.degree) {
+          var.coeff += var2.coeff;
+          if (var.coeff == 0) {
             variables.remove(j);
           }
           found = true;
@@ -140,9 +142,11 @@ public class Expr {
     for (int i = 0; i < other.variables.size(); i++) {
       boolean found = false;
       for (int j = 0; j < variables.size(); j++) {
-        if (variables.get(j).name == other.variables.get(i).name) {
-          variables.get(j).coeff -= other.variables.get(i).coeff;
-          if (variables.get(j).coeff == 0) {
+        Var var = variables.get(j);
+        Var var2 = other.variables.get(i);
+        if (var.name == var2.name && var.degree == var2.degree) {
+          var.coeff -= var2.coeff;
+          if (var.coeff == 0) {
             variables.remove(j);
           }
           found = true;
