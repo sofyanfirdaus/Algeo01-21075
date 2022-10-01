@@ -54,10 +54,6 @@ public class Main {
     System.out.println(solution4);
     System.out.println(system);
 
-    PolynomInterpolation polin = new PolynomInterpolation(
-      new double[] {1, 2, 3},
-      new double[] {1, 4, 9}
-    );
     Expr testEval = new Expr(2, 
       Expr.var("x", 1, 2),
       Expr.var("y", 2)
@@ -70,5 +66,12 @@ public class Main {
     // x^2 + 2y + 2 = 2^2 + 2*5 + 2 = 16
     System.out.println(testEval.evaluate(varValues));
     System.out.println(Expr.add(testEval, new Expr(-3, Expr.var("x", 3))));
+
+    PolynomInterpolation polin = new PolynomInterpolation(
+      new double[] {1, 4, 12, 15},
+      new double[] {1, 20, 45, 56}
+    );
+    System.out.println(polin.getFunction());
+    System.out.println(polin.apply(20));
   }
 }
