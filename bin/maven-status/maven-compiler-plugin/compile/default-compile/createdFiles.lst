@@ -4,3 +4,4 @@ tubes\algeo\Matrix.class
 tubes\algeo\LinearEquationSolver.class
 tubes\algeo\Expr.class
 tubes\algeo\Main.class
+tubes\algeo\studikasus\PolynomInterpolation.class
