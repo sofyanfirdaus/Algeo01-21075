@@ -2,6 +2,9 @@ package tubes.algeo;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import tubes.algeo.studikasus.PolynomInterpolation;
+
 import static java.util.Map.entry;
 
 /**
@@ -50,5 +53,21 @@ public class Main {
     System.out.println(solution3);
     System.out.println(solution4);
     System.out.println(system);
+
+    PolynomInterpolation polin = new PolynomInterpolation(
+      new double[] {1, 2, 3},
+      new double[] {1, 4, 9}
+    );
+    Expr testEval = new Expr(2, 
+      Expr.var("x", 1, 2),
+      Expr.var("y", 2)
+    );
+    System.out.println(testEval);
+    HashMap<String, Double> varValues = new HashMap(Map.ofEntries(
+      entry("x", 2d),
+      entry("y", 5d)
+    ));
+    // x^2 + 2y + 2 = 2^2 + 2*5 + 2 = 16
+    System.out.println(testEval.evaluate(varValues));
   }
 }

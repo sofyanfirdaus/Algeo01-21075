@@ -1,11 +1,92 @@
 package tubes.algeo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class Expr {
 
+  public static class Var {
+
+    private String name;
+    private double coeff;
+    private int degree;
+
+    public Var(String name, double coeff) {
+      this(name, coeff, 1);
+    }
+
+    public Var(String name, double coeff, int degree) {
+      this.name = name;
+      this.coeff = coeff;
+      this.degree = degree;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public double getCoefficient() {
+      return coeff;
+    }
+
+    public int getDegree() {
+      return degree;
+    }
+
+    public void setDegree(int degree) {
+      this.degree = degree;
+    }
+
+    public double evaluate(double varValue) {
+      return coeff * Math.pow(varValue, degree);
+    }
+
+    @Override
+    public String toString() {
+      String s = "";
+      if (coeff == 0) {
+        return s;
+      }
+      if (Math.abs(coeff - 1) > 0.001d) {
+        s = String.format(Locale.US, "%.2f", coeff);
+        s = s.replaceAll("0*$", "").replaceAll("\\.$", "");
+      }
+      s += name;
+      if (degree > 1) {
+        s += "^" + degree;
+      }
+      return s;
+    }
+  }
+  public static Expr add(Expr a, Expr b) {
+    Expr c = new Expr(a.constant, a.variables.toArray(new Var[a.variables.size()]));
+    c.add(b);
+    return c;
+  }
+
+  public static Expr subtract(Expr a, Expr b) {
+    Expr c = new Expr(a.constant, a.variables.toArray(new Var[a.variables.size()]));
+    c.subtract(b);
+    return c;
+  }
+
+  public static Expr multiply(Expr expr, double n) {
+    Expr c = new Expr(expr.constant, expr.variables.toArray(new Var[expr.variables.size()]));
+    c.multiply(n);
+    return c;
+  }
+
+  public static Var var(String name, double coeff) {
+    return var(name, coeff, 1);
+  }
+
+  public static Var var(String name, double coeff, int degree) {
+    return new Var(name, coeff, degree);
+  }
+
   private ArrayList<Var>  variables;
+
   private double constant;
 
   public Expr(double constant, Var... variables) {
@@ -13,7 +94,7 @@ public class Expr {
     this.variables = new ArrayList<Var>();
     for (Var var: variables) {
       if (var.getCoefficient() != 0) {
-        this.variables.add(Expr.var(var.getName(), var.getCoefficient()));
+        this.variables.add(Expr.var(var.getName(), var.getCoefficient(), var.getDegree()));
       }
     }
     this.constant = constant;
@@ -81,26 +162,21 @@ public class Expr {
     constant *= n;
   }
 
-  public static Expr add(Expr a, Expr b) {
-    Expr c = new Expr(a.constant, a.variables.toArray(new Var[a.variables.size()]));
-    c.add(b);
-    return c;
-  }
-
-  public static Expr subtract(Expr a, Expr b) {
-    Expr c = new Expr(a.constant, a.variables.toArray(new Var[a.variables.size()]));
-    c.subtract(b);
-    return c;
-  }
-
-  public static Expr multiply(Expr expr, double n) {
-    Expr c = new Expr(expr.constant, expr.variables.toArray(new Var[expr.variables.size()]));
-    c.multiply(n);
-    return c;
-  }
-
-  public static Var var(String name, double coeff) {
-    return new Var(name, coeff);
+  public double evaluate(HashMap<String, Double> varValues) {
+    // check hash map completeness
+    double result = constant;
+    try {
+      for (Var var : variables) {
+        if (!varValues.containsKey(var.getName())) {
+          throw new IllegalArgumentException("all variables must be mapped");
+        }
+        result += var.evaluate(varValues.get(var.getName()));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+    return result;
   }
 
   @Override
@@ -119,38 +195,5 @@ public class Expr {
       return formConst;
     }
     return s.replace("+-", "-").replace("+", " + ").replace("-", " - ").trim().replaceAll("^- ", "-");
-  }
-
-  public static class Var {
-
-    private String name;
-    private double coeff;
-
-    public Var(String name, double coeff) {
-      this.name = name;
-      this.coeff = coeff;
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public double getCoefficient() {
-      return coeff;
-    }
-
-    @Override
-    public String toString() {
-      String s = "";
-      if (coeff == 0) {
-        return s;
-      }
-      if (Math.abs(coeff - 1) > 0.001d) {
-        s = String.format(Locale.US, "%.2f", coeff);
-        s = s.replaceAll("0*$", "").replaceAll("\\.$", "");
-      }
-      s += name;
-      return s;
-    }
   }
 }
