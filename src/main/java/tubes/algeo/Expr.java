@@ -1,6 +1,8 @@
 package tubes.algeo;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -185,6 +187,8 @@ public class Expr {
 
   @Override
   public String toString() {
+    // sort variabel
+    Collections.sort(variables, Comparator.comparing(Var::getDegree).reversed().thenComparing(Var::getName));
     String s = "";
     for (int i = 0; i < variables.size(); i++) {
       if (i > 0) s += variables.get(i).toString() != "" ? "+" : "";

@@ -69,5 +69,6 @@ public class Main {
     ));
     // x^2 + 2y + 2 = 2^2 + 2*5 + 2 = 16
     System.out.println(testEval.evaluate(varValues));
+    System.out.println(Expr.add(testEval, new Expr(-3, Expr.var("x", 3))));
   }
 }
