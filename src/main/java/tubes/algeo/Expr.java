@@ -54,8 +54,11 @@ public class Expr {
         s = String.format(Locale.US, "%.2f", coeff);
         s = s.replaceAll("0*$", "").replaceAll("\\.$", "");
       }
+      if (degree == 0) {
+        return s;
+      }
       s += name;
-      if (degree > 1) {
+      if (degree != 1) {
         s += "^" + degree;
       }
       return s;
