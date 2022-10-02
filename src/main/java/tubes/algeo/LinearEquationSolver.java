@@ -94,14 +94,6 @@ public class LinearEquationSolver {
   }
 
   public static HashMap<String, Expr> solveSystemGaussJordan(Matrix augmentedMatrix) {
-    try {
-      if (augmentedMatrix.getRow() + 1 != augmentedMatrix.getCol()) {
-        throw new InvalidParameterException("matrix doesn't represent system of linear equations");
-      }
-    } catch(Exception e) {
-      e.printStackTrace();
-    }
-
     HashMap<String, Expr> solution = new HashMap<>();
 
     // clone matrix
@@ -112,11 +104,11 @@ public class LinearEquationSolver {
     for (int i = 0; i < sys.getRow(); i++) {
       boolean zero = true;
       int j;
-      for (j = i; j < sys.getCol() - 1 && zero; j++) {
-        zero = sys.getElement(i, j) == 0;
+      for (j = 0; j < sys.getCol() - 1 && zero; j++) {
+        zero = Math.abs(sys.getElement(i, j) - 0) <= .0001d;
       }
       if (zero) {
-        if (sys.getElement(i, j) != 0) {
+        if (Math.abs(sys.getElement(i, j) - 0) > .0001d) {
           // no solution
           return null;
         }

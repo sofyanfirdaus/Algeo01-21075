@@ -268,9 +268,9 @@ public class Matrix {
   }
 
   public Matrix transpose() {
-    Matrix res = new Matrix(getRow(), getCol());
-    for (int i = 0; i < getRow(); i++) {
-      for (int j = 0; j < getCol(); j++) {
+    Matrix res = new Matrix(getCol(), getRow());
+    for (int i = 0; i < getCol(); i++) {
+      for (int j = 0; j < getRow(); j++) {
         res.setElement(i, j, getElement(j, i));
       }
     }
@@ -288,7 +288,7 @@ public class Matrix {
   public Matrix getEchelon() {
     int n = getRow();
     int m = getCol();
-    Matrix mk = new Matrix(getMatrixData());
+    Matrix mk = new Matrix(data);
     int pivotRow = 0;
 
     for (int j = 0; j < m; j++) {
@@ -302,21 +302,26 @@ public class Matrix {
       }
       for (int i = pivotRow; i < n - 1; i++) {
         double pivotVal = mk.getElement(pivotRow, j);
-        if (pivotVal == 0) {
+        if (Math.abs(pivotVal - 0) <= .0001d) {
           // find row to swap
-          for (int k = pivotRow+1; k < n; k++) {
-            if (mk.getElement(k, j) != 0) {
+          boolean ok = false;
+          for (int k = pivotRow+1; k < n && !ok; k++) {
+            if (Math.abs(mk.getElement(k, j) - 0) > .0001d) {
               mk.swapRow(pivotRow, k);
+              ok = true;
+              i = k-1;
             }
           }
         } else {
           double t = -mk.getElement(i+1, j)/mk.getElement(pivotRow, j);
-          mk.data[i+1] = addMul(mk.data[i+1], mk.data[pivotRow], t);
+          if (t != 0) {
+            mk.data[i+1] = addMul(mk.data[i+1], mk.data[pivotRow], t);
+          }
         }
       }
       pivotRow++;
     }
-    for(int i = 0; i < n; i++) {
+    for(int i = 0; i < Math.min(m - 1, n); i++) {
       if (mk.getElement(i, i) != 0) {
         mk.data[i].multiply(1/mk.getElement(i, i));
       } else {
@@ -337,7 +342,7 @@ public class Matrix {
     int m = getCol();
     Matrix mk = new Matrix(getEchelon().data);
 
-    for (int j = m - 1; j > 0; j--) {
+    for (int j = m - Math.abs(m - n); j > 0; j--) {
       // find non-zero (pivot)
       int pivotRow = j;
       boolean ok = false;

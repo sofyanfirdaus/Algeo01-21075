@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tubes.algeo.studikasus.BicubicInterpolation;
+import tubes.algeo.studikasus.MultipleLinearRegression;
 import tubes.algeo.studikasus.PolynomInterpolation;
 
 import static java.util.Map.entry;
@@ -84,5 +85,37 @@ public class Main {
     BicubicInterpolation bicin = new BicubicInterpolation(bicubic);
     System.out.println(bicin.getFunction());
     System.out.println(bicin.apply(0.5, 0.5));
+
+
+    Matrix system2 = Matrix.from(new double[][] {
+    {0      ,   0 , 0      ,   0 , 0      ,    0 , 1      ,   1 , 1      ,    13},
+    {0      ,   0 , 0      ,   1 , 1      ,    1 , 0      ,   0 , 0      ,    15},
+    {1      ,   1 , 1      ,   0 , 0      ,    0 , 0      ,   0 , 0      ,     8},
+    {0      ,   0 , .04289 ,   0 , .04289 , 0.75 , .04289 , .75 , .61396 , 14.79},
+    {0      , .25 , .91421 , .25 , .91421 ,  .25 , .91421 , .25 , 0      , 14.31},
+    {.61396 , .75 , .04289 , .75 , .04289 ,    0 , .04289 ,   0 , 0      ,  3.81},
+    {0      ,   0 , 1      ,   0 , 0      ,    1 , 0      ,   0 , 1      ,    18},
+    {0      ,   1 , 0      ,   0 , 1      ,    0 , 0      ,   1 , 0      ,    12},
+    {1      ,   0 , 0      ,   1 , 0      ,    0 , 1      ,   0 , 0      ,     6},
+    {.04289 , .75 , .61396 ,   0 , .04289 ,  .75 , 0      ,   0 , .04289 , 10.51},
+    {.91421 , .25 , 0      , .25 , .91421 ,  .25 , 0      , .25 , .91421 , 16.13},
+    {.04289 ,   0 , 0      , .75 , 0      ,    0 , .61396 , .75 , .04289 ,  7.04}
+    });
+    System.out.println(LinearEquationSolver.solveSystemGaussJordan(system2));
+
+    Matrix X = Matrix.from(new double[][] {
+    {674  , 2175 , 4672 ,  147},
+    {217  , 2404 , 3090 , 7464},
+    {606  , 4551 , 1982 , 2000},
+    {32   , 8265 , 7657 ,  307},
+    {671  , 1648 , 4861 , 1786},
+    {392  , 2841 , 378  , 4288},
+    {4291 , 3749 , 221  , 1123},
+    {438  , 1237 , 4817 , 3777}
+    });
+    double[] y = new double[] {606,4551,1982,2000,312,483,8847,2471};
+    MultipleLinearRegression mlr = new MultipleLinearRegression(X, y);
+    System.out.println(mlr.getFunction());
+    System.out.println(mlr.apply(674, 2175, 4672, 147));
   }
 }
