@@ -102,37 +102,50 @@ public class LinearEquationSolver {
     // clone matrix
     Matrix sys = new Matrix(augmentedMatrix.getMatrixData()).getReductedEchelon();
 
-    // check free variable
-    int firstZero = -1;
-    for (int i = 0; i < sys.getRow(); i++) {
-      boolean zero = true;
+    // the number of the expected variables
+    int numExpect = sys.getCol() - 1;
+    // check wether the system has solution
+    boolean zeroes = true;
+    for (int i = sys.getRow() - 1; i >= 0 && zeroes; i--) {
       int j;
-      for (j = 0; j < sys.getCol() - 1 && zero; j++) {
-        zero = Math.abs(sys.getElement(i, j) - 0) <= .0001d;
+      for (j = 0; j < numExpect && zeroes; j++) {
+        zeroes = Math.abs(sys.getElement(i, j) - 0) <= .0001d;
       }
-      if (zero) {
-        if (Math.abs(sys.getElement(i, j) - 0) > .0001d) {
-          // no solution
-          return null;
-        }
-        firstZero = firstZero == -1 ? i : firstZero;
-        solution.put("x" + (i+1), new Expr(0, Expr.var("x" + (i+1), 1)));
+      if (zeroes && Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+        // no solution
+        return null;
       }
     }
-
-    // solve the rest
-    int startIdx = firstZero == -1 ? sys.getRow() - 1 : firstZero - 1;
-    for (int i = startIdx; i >= 0; i--) {
+    int numfree = 0;
+    for (int n = numExpect; n > 0; n--) {
+      // check wether the variable is a free variable
+      boolean free = true;
+      for (int i = sys.getRow() - 1; i >= n - (1 + numfree) && free; i--) {
+        free = Math.abs(sys.getElement(i, n-1) - 0) <= .0001d;
+      }
+      if (free) {
+        solution.put("x" + n, new Expr(0, Expr.var("p" + n, 1)));
+        numfree++;
+      }
+    }
+    for (int i = sys.getRow() - 1; i >= 0; i--) {
+      zeroes = true;
       Expr lhs = new Expr(0);
-      Expr rhs = new Expr(sys.getElement(i, sys.getCol() - 1));
-      for (int j = i; j < sys.getCol() - 1; j++) {
-        lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
+      Expr rhs = new Expr(0);
+      int j;
+      String solvable = "";
+      for (j = 0; j < numExpect; j++) {
+        if (Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+          lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
+          zeroes = false;
+          solvable = solvable == "" ? "x" + (j+1) : solvable;
+        }
       }
-      Expr sol = solve(lhs, rhs, "x" + (i+1), solution);
-      solution.put("x" + (i+1), sol);
+      if (zeroes) continue;
+      rhs.add(new Expr(sys.getElement(i, j)));
+      solution.put(solvable, solve(lhs, rhs, solvable, solution));
     }
-
-    return solution;
+    return solution.size() > 0 ? solution : null;
   }
 
   public static HashMap<String, Expr> solveSystemCramer(Matrix augmentedMatrix) {

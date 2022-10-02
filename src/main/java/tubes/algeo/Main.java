@@ -118,6 +118,5 @@ public class Main {
     System.out.println(mlr.getFunction());
     System.out.println(mlr.apply(674, 2175, 4672, 147));
 
-    System.out.println(LinearEquationSolver.solveSystemGauss(DataStudiKasus.SPL.A.system));
   }
 }
