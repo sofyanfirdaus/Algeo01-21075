@@ -1,16 +1,8 @@
 package tubes.algeo;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-
-import tubes.algeo.studikasus.BicubicInterpolation;
-import tubes.algeo.studikasus.MultipleLinearRegression;
-import tubes.algeo.studikasus.PolynomInterpolation;
-
-import static java.util.Map.entry;
 
 public class User {
 
@@ -71,7 +63,7 @@ public class User {
         ketik.close();
     }
 
-    public void readMatrix(Matrix Maug) {
+    public void writeMatrix(Matrix matrix) {
         int m,n;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Masukkan Ordo Matriks m x n");
@@ -80,16 +72,16 @@ public class User {
         System.out.print("Masukkan kolom n : ");
         n = scanner.nextInt();
 
-        Maug = new Matrix(m,n);
+        matrix = new Matrix(m,n); //Bingung implementasinya gmn
 
         System.out.println("Tulis Elemen Matriks ");
         for(int i = 0; i < m; i++){
 			for (int j = 0; j < n; j++){
-				Maug.setElement(i,j,scanner.nextDouble());
+				matrix.setElement(i,j,scanner.nextDouble());
 			}
 		}
         System.out.println("Matriks yang Anda masukkan ialah :");
-        System.out.println(Maug);
+        System.out.println(matrix);
         scanner.close();
     }
 
@@ -167,11 +159,12 @@ public class User {
             System.out.println("");
         }
 
+        // Ini inisiasi Matriks nya gmn ya
         Matrix Maug = new Matrix(0,0);
         if (pil == 1) {
             readFile(Maug);
         } else if (pil == 2) {
-            readMatrix(Maug);
+            writeMatrix(Maug);
         }
         System.out.println(Maug);
 
