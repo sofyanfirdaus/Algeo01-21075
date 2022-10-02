@@ -111,23 +111,28 @@ public class Matrix {
      */
   public double getDeterminantGauss() {
     double result = 1;
-    Row[] triangularMatrix = new Matrix(data).data;
-    for (int j = 0; j < getCol() - 1; j++) {
-      for (int i = j+1; i < getRow(); i++) {
-        double val = triangularMatrix[j].getElement(j);
+    Matrix triangular = new Matrix(data);
+    for (int j = 0; j < triangular.getCol() - 1; j++) {
+      for (int i = j+1; i < triangular.getRow(); i++) {
+        double val = triangular.getElement(j, j);
         if (val == 0) {
-          if (i - 1 == j) continue;
-          else {
-            swapRow(i, j + 1);
-            result *= -1;
+          boolean zero = true;
+          for (int k = i; k < triangular.getRow() && zero; k++) {
+            if (triangular.getElement(k, j) != 0d) {
+              triangular.swapRow(k, j);
+              result *= -1;
+              zero = false;
+              i--;
+            }
           }
         } else {
-          triangularMatrix[i] = addMul(triangularMatrix[i], triangularMatrix[j], -triangularMatrix[i].getElement(j)/triangularMatrix[j].getElement(j));
+          double t = -triangular.getElement(i, j)/triangular.getElement(j, j);
+          triangular.data[i] = addMul(triangular.data[i], triangular.data[j], t);
         }
       }
     }
-    for (int i = 0; i < triangularMatrix.length; i++) {
-      result *= triangularMatrix[i].getElement(i);
+    for (int i = 0; i < triangular.getRow(); i++) {
+      result *= triangular.getElement(i, i);
     }
     return result;
   }
