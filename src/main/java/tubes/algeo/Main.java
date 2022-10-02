@@ -55,7 +55,7 @@ public class Main {
     System.out.println(solution4);
     System.out.println(system);
 
-    Expr testEval = new Expr(2, 
+    Expr testEval = new Expr(2,
       Expr.var("x", 1, 2),
       Expr.var("y", 2)
     );
@@ -83,5 +83,6 @@ public class Main {
     });
     BicubicInterpolation bicin = new BicubicInterpolation(bicubic);
     System.out.println(bicin.getFunction());
+    System.out.println(bicin.apply(0.5, 0.5));
   }
 }

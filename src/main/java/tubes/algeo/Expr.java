@@ -50,8 +50,8 @@ public class Expr {
       }
       String s = "";
       Collections.sort(vars, Comparator.comparing(Var::getDegree).thenComparing(Var::getName));
-      for (Var v : vars) {
-        s += v;
+      for (int i = 0; i < vars.size(); i++) {
+        s += vars.get(i);
       }
       if (coeff != 1) {
         String coefform = String.format(Locale.US, "%.2f", coeff)
@@ -253,11 +253,23 @@ public class Expr {
     // check hash map completeness
     double result = constant;
     try {
-      for (Var var : variables) {
-        if (!varValues.containsKey(var.getName())) {
-          throw new IllegalArgumentException("all variables must be mapped");
+      if (variables.size() > 0) {
+        for (Var var : variables) {
+          if (!varValues.containsKey(var.getName())) {
+            throw new IllegalArgumentException("all variables must be mapped");
+          }
+          result += var.evaluate(varValues.get(var.getName()));
         }
-        result += var.evaluate(varValues.get(var.getName()));
+      } else if (products.size() > 0) {
+        for (int i = 0; i < products.size(); i++) {
+          for (int j = 0; j < products.get(i).vars.size(); j++) {
+            Var var = products.get(i).vars.get(j);
+            if (!varValues.containsKey(var.getName())) {
+              throw new IllegalArgumentException("all variables must be mapped");
+            }
+          }
+          result += products.get(i).evaluate(varValues);
+        }
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -278,6 +290,7 @@ public class Expr {
       }
     } else if (products.size() > 0) {
       for (int i = 0; i < products.size(); i++) {
+        if (i > 0) s += products.get(i).toString() != "" ? "+" : "";
         s += products.get(i);
       }
     }
