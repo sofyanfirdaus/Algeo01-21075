@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import tubes.algeo.Expr.Var;
 
+/**Solver untuk sistem persamaan <strong>linear<strong> **/
 public class LinearEquationSolver {
 
   public static Expr solve(Expr lhs, Expr rhs, String var, HashMap<String, Expr> valueMap) {

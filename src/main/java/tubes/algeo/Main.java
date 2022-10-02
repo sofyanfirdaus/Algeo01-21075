@@ -3,6 +3,7 @@ package tubes.algeo;
 import java.util.HashMap;
 import java.util.Map;
 
+import tubes.algeo.studikasus.BicubicInterpolation;
 import tubes.algeo.studikasus.PolynomInterpolation;
 
 import static java.util.Map.entry;
@@ -73,5 +74,14 @@ public class Main {
     );
     System.out.println(polin.getFunction());
     System.out.println(polin.apply(20));
+
+    Matrix bicubic = Matrix.from(new double[][] {
+    {1  ,  2 , 3  ,  4},
+    {5  ,  6 , 7  ,  8},
+    {9  , 10 , 11 , 12},
+    {13 , 14 , 15 , 16}
+    });
+    BicubicInterpolation bicin = new BicubicInterpolation(bicubic);
+    System.out.println(bicin.getFunction());
   }
 }

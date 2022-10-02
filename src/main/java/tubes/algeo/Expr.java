@@ -8,6 +8,61 @@ import java.util.Locale;
 
 public class Expr {
 
+  public static class Prod {
+
+    private double coeff;
+    private ArrayList<Var> vars;
+
+    public Prod(Var var, Var... rest) {
+      vars = new ArrayList<>(1 + rest.length);
+      vars.add(var(var.name, 1, var.degree));
+      coeff = var.coeff;
+      for (Var v : rest) {
+        vars.add(var(v.name, 1, v.degree));
+        coeff *= v.coeff;
+      }
+    }
+
+    public double getCoefficient() {
+      return coeff;
+    }
+
+    public double evaluate(HashMap<String, Double> varValues) {
+      double result = coeff;
+      try {
+        for (Var var : vars) {
+          if (!varValues.containsKey(var.getName())) {
+            throw new IllegalArgumentException("all variables must be mapped");
+          }
+          result *= var.evaluate(varValues.get(var.getName()));
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.exit(1);
+      }
+      return result;
+    }
+
+    @Override
+    public String toString() {
+      if (coeff == 0) {
+        return "";
+      }
+      String s = "";
+      Collections.sort(vars, Comparator.comparing(Var::getDegree).thenComparing(Var::getName));
+      for (Var v : vars) {
+        s += v;
+      }
+      if (coeff != 1) {
+        String coefform = String.format(Locale.US, "%.2f", coeff)
+                            .replaceAll("0*$", "")
+                            .replaceAll("\\.$", "");
+        s = coefform + s;
+      }
+      return s;
+    }
+  }
+
   public static class Var {
 
     private String name;
@@ -90,19 +145,42 @@ public class Expr {
     return new Var(name, coeff, degree);
   }
 
+  public static Prod prod(Var var, Var... rest) {
+    return new Prod(var, rest);
+  }
+
   private ArrayList<Var> variables;
+  private ArrayList<Prod> products;
 
   private double constant;
 
+  public Expr(double constant) {
+    this.constant = constant;
+    variables = new ArrayList<>();
+    products = new ArrayList<>();
+  }
+
   public Expr(double constant, Var... variables) {
     // avoid passing by reference
-    this.variables = new ArrayList<Var>();
+    this.variables = new ArrayList<>(variables.length);
     for (Var var: variables) {
       if (var.getCoefficient() != 0) {
-        this.variables.add(Expr.var(var.getName(), var.getCoefficient(), var.getDegree()));
+        this.variables.add(var(var.getName(), var.getCoefficient(), var.getDegree()));
       }
     }
     this.constant = constant;
+    products = new ArrayList<>();
+  }
+
+  public Expr(double constant, Prod... products) {
+    this.products = new ArrayList<>(products.length);
+    for (Prod prod : products) {
+      if (prod.getCoefficient() != 0) {
+        this.products.add(prod);
+      }
+    }
+    this.constant = constant;
+    variables = new ArrayList<>();
   }
 
   public double getConstant() {
@@ -190,19 +268,25 @@ public class Expr {
 
   @Override
   public String toString() {
-    // sort variabel
-    Collections.sort(variables, Comparator.comparing(Var::getDegree).reversed().thenComparing(Var::getName));
     String s = "";
-    for (int i = 0; i < variables.size(); i++) {
-      if (i > 0) s += variables.get(i).toString() != "" ? "+" : "";
-      s += variables.get(i);
+    if (variables.size() > 0) {
+      // sort variabel
+      Collections.sort(variables, Comparator.comparing(Var::getDegree).reversed().thenComparing(Var::getName));
+      for (int i = 0; i < variables.size(); i++) {
+        if (i > 0) s += variables.get(i).toString() != "" ? "+" : "";
+        s += variables.get(i);
+      }
+    } else if (products.size() > 0) {
+      for (int i = 0; i < products.size(); i++) {
+        s += products.get(i);
+      }
     }
     String formConst = String.format(Locale.US, "%.2f", constant);
     formConst = formConst.replaceAll("0*$", "").replaceAll("\\.$", "");
     if (constant != 0) {
       s += "+" + formConst;
     }
-    if (variables.size() == 0) {
+    if (variables.size() == 0 && products.size() == 0) {
       return formConst;
     }
     return s.replace("+-", "-").replace("+", " + ").replace("-", " - ").trim().replaceAll("^- ", "-");
