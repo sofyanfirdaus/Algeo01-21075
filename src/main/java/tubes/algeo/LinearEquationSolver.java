@@ -42,7 +42,7 @@ public class LinearEquationSolver {
       }
     }
 
-    if (delta != 0) {
+    if (Math.abs(delta) > 1-6) {
       solution.multiply(1.0/delta);
       return solution;
     } else {
@@ -61,9 +61,9 @@ public class LinearEquationSolver {
     for (int i = sys.getRow() - 1; i >= 0 && zeroes; i--) {
       int j;
       for (j = 0; j < numExpect && zeroes; j++) {
-        zeroes = Math.abs(sys.getElement(i, j)) <= .0001d;
+        zeroes = Math.abs(sys.getElement(i, j)) <= 1e-7;
       }
-      if (zeroes && Math.abs(sys.getElement(i, j)) > .0001d) {
+      if (zeroes && Math.abs(sys.getElement(i, j)) > 1e-7) {
         // no solution
         return null;
       }
@@ -72,7 +72,7 @@ public class LinearEquationSolver {
       // check wether the variable is a free variable
       boolean free = true;
       for (int i = sys.getRow() - 1; i >= 0 && free; i--) {
-        free = Math.abs(sys.getElement(i, n-1)) <= .0001d;
+        free = Math.abs(sys.getElement(i, n-1)) <= 1e-7;
       }
       if (free) {
         solution.put("x" + n, new Expr(0, Expr.var("x" + n, 1)));
@@ -85,7 +85,7 @@ public class LinearEquationSolver {
       int j;
       String solvable = "";
       for (j = 0; j < numExpect; j++) {
-        if (Math.abs(sys.getElement(i, j)) > .0001d) {
+        if (Math.abs(sys.getElement(i, j)) > 1e-7) {
           lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
           zeroes = false;
           solvable = solvable == "" ? "x" + (j+1) : solvable;
@@ -111,9 +111,9 @@ public class LinearEquationSolver {
     for (int i = sys.getRow() - 1; i >= 0 && zeroes; i--) {
       int j;
       for (j = 0; j < numExpect && zeroes; j++) {
-        zeroes = Math.abs(sys.getElement(i, j)) <= .0001d;
+        zeroes = Math.abs(sys.getElement(i, j)) <= 1e-7;
       }
-      if (zeroes && Math.abs(sys.getElement(i, j)) > .0001d) {
+      if (zeroes && Math.abs(sys.getElement(i, j)) > 1e-7) {
         // no solution
         return null;
       }
@@ -122,7 +122,7 @@ public class LinearEquationSolver {
       // check wether the variable is a free variable
       boolean free = true;
       for (int i = sys.getRow() - 1; i >= 0 && free; i--) {
-        free = Math.abs(sys.getElement(i, n-1)) <= .0001d;
+        free = Math.abs(sys.getElement(i, n-1)) <= 1e-7;
       }
       if (free) {
         solution.put("x" + n, new Expr(0, Expr.var("x" + n, 1)));
@@ -135,7 +135,7 @@ public class LinearEquationSolver {
       int j;
       String solvable = "";
       for (j = 0; j < numExpect; j++) {
-        if (Math.abs(sys.getElement(i, j)) > .0001d) {
+        if (Math.abs(sys.getElement(i, j)) > 1e-7) {
           lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
           zeroes = false;
           solvable = solvable == "" ? "x" + (j+1) : solvable;
@@ -158,7 +158,7 @@ public class LinearEquationSolver {
     double det = lhs.getDeterminantGauss();
 
     try {
-      if (det == 0) {
+      if (Math.abs(det) <= 1e-7) {
         throw new IllegalArgumentException("the system of equation cannot be solved using Cramer's rule (determinant = 0)");
       }
     } catch (Exception e) {
