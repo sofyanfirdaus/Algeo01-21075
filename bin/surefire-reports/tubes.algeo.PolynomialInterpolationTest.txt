@@ -1,16 +1,16 @@
 -------------------------------------------------------------------------------
 Test set: tubes.algeo.PolynomialInterpolationTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.002 s <<< FAILURE! - in tubes.algeo.PolynomialInterpolationTest
+Tests run: 7, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.005 s <<< FAILURE! - in tubes.algeo.PolynomialInterpolationTest
 polInter_B1(tubes.algeo.PolynomialInterpolationTest)  Time elapsed: 0 s  <<< FAILURE!
-java.lang.AssertionError: expected:<722116.5725402832> but was:<2.4696073532322903E10>
+java.lang.AssertionError: expected:<722116.5725402832> but was:<-5.438124453791681E11>
 	at tubes.algeo.PolynomialInterpolationTest.polInter_B1(PolynomialInterpolationTest.java:44)
 
 polInter_B2(tubes.algeo.PolynomialInterpolationTest)  Time elapsed: 0 s  <<< FAILURE!
-java.lang.AssertionError: expected:<1184756.440109253> but was:<-2.7438658375695953E11>
+java.lang.AssertionError: expected:<1184756.440109253> but was:<-1.1251953091242551E12>
 	at tubes.algeo.PolynomialInterpolationTest.polInter_B2(PolynomialInterpolationTest.java:49)
 
 polInter_B3(tubes.algeo.PolynomialInterpolationTest)  Time elapsed: 0 s  <<< FAILURE!
-java.lang.AssertionError: expected:<1849547.7185668945> but was:<-7.260371654488058E11>
+java.lang.AssertionError: expected:<1849547.7185668945> but was:<-1.6976508415579927E12>
 	at tubes.algeo.PolynomialInterpolationTest.polInter_B3(PolynomialInterpolationTest.java:54)
 
