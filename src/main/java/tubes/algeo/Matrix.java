@@ -112,10 +112,10 @@ public class Matrix {
     for (int j = 0; j < triangular.getCol() - 1; j++) {
       for (int i = j+1; i < triangular.getRow(); i++) {
         double val = triangular.getElement(j, j);
-        if (Math.abs(val) <= 1e-10) {
+        if (Math.abs(val) <= 1e-7) {
           boolean zero = true;
           for (int k = i; k < triangular.getRow() && zero; k++) {
-            if (Math.abs(triangular.getElement(k, j)) > 1e-10) {
+            if (Math.abs(triangular.getElement(k, j)) > 1e-7) {
               triangular.swapRow(k, j);
               result *= -1;
               zero = false;
@@ -239,7 +239,7 @@ public class Matrix {
 
   public Matrix getInverseMatrixAdj() {
     double det = getDeterminantGauss();
-    if (Math.abs(det) <= 1e-10) return null;
+    if (Math.abs(det) <= 1e-7) return null;
     return Matrix.multiply(adj(this).transpose(), 1/det);
   }
 
@@ -258,7 +258,7 @@ public class Matrix {
     boolean equal = getRow() == other.getRow() && getCol() == other.getCol();
     for (int i = 0; i < getRow() && equal; i++) {
       for (int j = 0; j < getCol() && equal; j++) {
-        equal = Math.abs(getElement(i, j) - other.getElement(i, j)) <= 1e-10;
+        equal = Math.abs(getElement(i, j) - other.getElement(i, j)) <= 1e-7;
       }
     }
     return equal;
@@ -292,7 +292,7 @@ public class Matrix {
     for (int i = 0; i < mk.getRow(); i++) {
       double min = mk.getElement(i, 0);
       for (int j = 0; j < mk.getCol(); j++) {
-        if ((Math.abs(min) <= 1e-10 || min > mk.getElement(i, j)) && Math.abs(mk.getElement(i, j)) > 1e-10) {
+        if ((Math.abs(min) <= 1e-7 || min > mk.getElement(i, j)) && Math.abs(mk.getElement(i, j)) > 1e-7) {
           min = mk.getElement(i, j);
         }
       }
@@ -301,22 +301,40 @@ public class Matrix {
       }
     }
 
+    // avoid small number division again
+    int start = 0;
+    for (int j = 0; j < mk.getCol() && start < getRow() - 1; j++) {
+      int idxMin = start;
+      double min = mk.getElement(idxMin, j);
+      int i = start ;
+      for (; i < mk.getRow(); i++) {
+        if ((Math.abs(min) <= 1e-7 || min > mk.getElement(i, j)) && Math.abs(mk.getElement(i, j)) > 1e-7) {
+          idxMin = i;
+          min = mk.getElement(i, j);
+        }
+      }
+      if (idxMin != start) {
+        mk.swapRow(idxMin, start);
+        start++;
+      }
+    }
+
     for (int j = 0; j < m; j++) {
       // find non-zero column
       boolean zero = true;
       for (int i = pivotRow; i < n && zero; i++) {
-        zero = Math.abs(mk.getElement(i, j)) <= 1e-10;
+        zero = Math.abs(mk.getElement(i, j)) <= 1e-7;
       }
       if (zero) {
         continue;
       }
       for (int i = pivotRow; i < n - 1; i++) {
         double pivotVal = mk.getElement(pivotRow, j);
-        if (Math.abs(pivotVal) <= 1e-10) {
+        if (Math.abs(pivotVal) <= 1e-7) {
           // find row to swap
           boolean ok = false;
           for (int k = pivotRow + 1; k < n && !ok; k++) {
-            if (Math.abs(mk.getElement(k, j)) > 1e-10) {
+            if (Math.abs(mk.getElement(k, j)) > 1e-7) {
               mk.swapRow(pivotRow, k);
               ok = true;
               i = k - 1;
@@ -324,7 +342,7 @@ public class Matrix {
           }
         } else {
           double t = -mk.getElement(i+1, j)/mk.getElement(pivotRow, j);
-          if (Math.abs(t) > 1e-10) {
+          if (Math.abs(t) > 1e-7) {
             mk.data[i+1] = addMul(mk.data[i+1], mk.data[pivotRow], t);
           }
         }
@@ -332,12 +350,12 @@ public class Matrix {
       pivotRow++;
     }
     for(int i = 0; i < Math.min(m - 1, n); i++) {
-      if (Math.abs(mk.getElement(i, i)) > 1e-10) {
+      if (Math.abs(mk.getElement(i, i)) > 1e-7) {
         mk.data[i].multiply(1/mk.getElement(i, i));
       } else {
         boolean ok = false;
         for (int j = i+1; j < mk.getCol() && !ok; j++) {
-          if (Math.abs(mk.getElement(i, j)) > 1e-10) {
+          if (Math.abs(mk.getElement(i, j)) > 1e-7) {
             mk.data[i].multiply(1/mk.getElement(i, j));
             ok = true;
           }
@@ -357,7 +375,7 @@ public class Matrix {
       int pivotRow = j;
       boolean ok = false;
       for (int i = Math.min(n - 1, j); i >= 0 && !ok; i--) {
-        if (Math.abs(mk.getElement(i, j)) > 1e-10) {
+        if (Math.abs(mk.getElement(i, j)) > 1e-7) {
           pivotRow = i;
           ok = true;
         }

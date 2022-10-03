@@ -5,6 +5,9 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 public class DataStudiKasus {
+  
+  public static final double EPSILON = 0.1;
+
   public static class SPL {
 
     public static class A {
@@ -92,6 +95,104 @@ public class DataStudiKasus {
         entry("x10", new Expr(-923780))
       ));
     }
+
+    public static class E {
+      public static final Matrix system = Matrix.from(new double[][] {
+      {1,  -1, 2,  -1, -1},
+      {2,   1, -2, -2, -2},
+      {-1,  2, -4,  1, 1},
+      {3,   0, 0,  -3, -3}
+      });
+      public static final HashMap<String, Expr> solution = new HashMap<>(Map.ofEntries(
+        entry("x1", new Expr(-1, Expr.var("x4", 1))),
+        entry("x2", new Expr(0, Expr.var("x3", 2))),
+        entry("x3", new Expr(0, Expr.var("x3", 1))),
+        entry("x4", new Expr(0, Expr.var("x4", 1)))
+      ));
+    }
+
+    public static class F {
+      public static final Matrix system = Matrix.from(new double[][] {
+      {2,   0, 8,   0, 8},
+      {0,   1, 0,   4, 6},
+      {-4,  0, 6,   0, 6},
+      {0,  -2, 0,   3, -1},
+      {2,   0, -4,  0, -4},
+      {0,   1, 0,  -2, 0}
+      });
+      public static final HashMap<String, Expr> solution = new HashMap<>(Map.ofEntries(
+        entry("x1", new Expr(0)),
+        entry("x2", new Expr(2)),
+        entry("x3", new Expr(1)),
+        entry("x4", new Expr(1))
+      ));
+    }
+
+    public static class G {
+      public static final Matrix system = Matrix.from(new double[][] {
+      {8, 1, 3,   2, 0},
+      {2, 9, -1, -2, 1},
+      {1, 3, 2,  -1, 2},
+      {1, 0, 0,   4, 3}
+      });
+      public static final HashMap<String, Expr> solution = new HashMap<>(Map.ofEntries(
+        entry("x1", new Expr(-0.65)),
+        entry("x2", new Expr(.56)),
+        entry("x3", new Expr(.94)),
+        entry("x4", new Expr(.91))
+      ));
+    }
+
+    public static class H {
+      public static final Matrix system = Matrix.from(new double[][] {
+      {0,        0, 0,        1, 1,         1, 0,        0, 0,         15},
+      {1,        1, 1,        0, 0,         0, 0,        0, 0,          8},
+      {0,        0, .04289,   0, .04289, 0.75, .04289, .75, .61396, 14.79},
+      {0,      .25, .91421, .25, .91421,  .25, .91421, .25, 0,      14.31},
+      {.61396, .75, .04289, .75, .04289,    0, .04289,   0, 0,       3.81},
+      {0,        0, 1,        0, 0,         1, 0,        0, 1,         18},
+      {0,        1, 0,        0, 1,         0, 0,        1, 0,         12},
+      {1,        0, 0,        1, 0,         0, 1,        0, 0,          6},
+      {.04289, .75, .61396,   0, .04289,  .75, 0,        0, .04289, 10.51},
+      {.91421, .25, 0,      .25, .91421,  .25, 0,      .25, .91421, 16.13},
+      {.04289,   0, 0,      .75, 0,         0, .61396, .75, .04289,  7.04}
+      });
+      public static final HashMap<String, Expr> solution = null;
+    }
   }
 
+  public static class InterpolasiPolinomial {
+
+    public static class A {
+
+      public static final double[] X = new double[] {
+        0.4, 0.7, 0.11, 0.17, 0.2, 0.23
+      };
+
+      public static final double[] Y = new double[] {
+        0.043, 0.005, 0.072, 0.1, 0.13, 0.147
+      };
+
+      public static double uji(double x) {
+        // Sumber: www.wolframalpha.com
+        return -648.378 * Math.pow(x, 5) + 1117.46 * Math.pow(x, 4) - 696.133 * Math.pow(x, 3) + 193.715 * Math.pow(x, 2) - 23.6825 * x + 1.10651;
+      }
+    }
+
+    public static class B {
+
+      public static final double[] X = new double[] {
+        6.567, 7, 7.258, 7.451, 7.548, 7.839, 8.161, 8.484, 8.709, 9
+      };
+
+      public static final double[] Y = new double[] {
+        12.624, 21.807, 38.391, 54.517, 51.952, 28.228, 35.764, 20.813, 12.408, 10.534
+      };
+
+      public static double uji(double x) {
+        // Sumber: www.wolframalpha.com
+        return -141.075 * Math.pow(x, 9) + 9378.59 * Math.pow(x, 8) - 275654 * Math.pow(x, 7) + 4.69907e6 * Math.pow(x, 6) - 5.117e7 * Math.pow(x, 5) + 3.68848e8 * Math.pow(x, 4) - 1.75835e9 * Math.pow(x, 3) + 5.33932e9 * Math.pow(x, 2) - 9.35691e9 * x + 7.1956e9;
+      }
+    }
+  }
 }

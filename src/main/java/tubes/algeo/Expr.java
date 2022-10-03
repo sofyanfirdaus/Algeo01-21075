@@ -53,11 +53,11 @@ public class Expr {
       for (int i = 0; i < vars.size(); i++) {
         s += vars.get(i);
       }
-      if (Math.abs(coeff - 1) > 1e-10) {
+      if (Math.abs(coeff - 1) > 1e-7) {
         String coefform = String.format(Locale.US, "%.2f", coeff)
                             .replaceAll("0*$", "")
                             .replaceAll("\\.$", "");
-        s = Math.abs(coeff + 1) > 1e-10 ? coefform + s : "-" + s;
+        s = Math.abs(coeff + 1) > 1e-7 ? coefform + s : "-" + s;
       }
       return s;
     }
@@ -102,12 +102,12 @@ public class Expr {
     @Override
     public String toString() {
       String s = "";
-      if (Math.abs(coeff) <= 1e-10) {
+      if (Math.abs(coeff) <= 1e-7) {
         return s;
       }
-      if (Math.abs(coeff - 1) > 1e-10) {
+      if (Math.abs(coeff - 1) > 1e-7) {
         String coefform = String.format(Locale.US, "%.2f", coeff);
-        s += Math.abs(coeff + 1) <= 1e-10 ? "-" : coefform;
+        s += Math.abs(coeff + 1) <= 1e-7 ? "-" : coefform;
         s = s.replaceAll("0*$", "").replaceAll("\\.$", "");
       }
       if (degree == 0) {
@@ -169,7 +169,7 @@ public class Expr {
     // avoid passing by reference
     this.variables = new ArrayList<>(variables.length);
     for (Var var: variables) {
-      if (Math.abs(var.getCoefficient()) > 1e-10) {
+      if (Math.abs(var.getCoefficient()) > 1e-7) {
         this.variables.add(var(var.getName(), var.getCoefficient(), var.getDegree()));
       }
     }
@@ -180,7 +180,7 @@ public class Expr {
   public Expr(double constant, Prod... products) {
     this.products = new ArrayList<>(products.length);
     for (Prod prod : products) {
-      if (Math.abs(prod.getCoefficient()) > 1e-10) {
+      if (Math.abs(prod.getCoefficient()) > 1e-7) {
         this.products.add(prod);
       }
     }
@@ -213,7 +213,7 @@ public class Expr {
         Var var2 = other.variables.get(i);
         if (var.name.equals(var2.name) && var.degree == var2.degree) {
           var.coeff += var2.coeff;
-          if (Math.abs(var.coeff) <= 1e-10) {
+          if (Math.abs(var.coeff) <= 1e-7) {
             variables.remove(j);
           }
           found = true;
@@ -234,7 +234,7 @@ public class Expr {
         Var var2 = other.variables.get(i);
         if (var.name == var2.name && var.degree == var2.degree) {
           var.coeff -= var2.coeff;
-          if (Math.abs(var.coeff) <= 1e-10) {
+          if (Math.abs(var.coeff) <= 1e-7) {
             variables.remove(j);
           }
           found = true;
@@ -299,9 +299,9 @@ public class Expr {
         s += products.get(i);
       }
     }
-    String formConst = String.format(Locale.US, "%.2f", Math.abs(constant) <= 1e-10 ? 0 : constant);
+    String formConst = String.format(Locale.US, "%.2f", Math.abs(constant) <= 1e-7 ? 0 : constant);
     formConst = formConst.replaceAll("0*$", "").replaceAll("\\.$", "");
-    if (Math.abs(constant) > 1e-10) {
+    if (Math.abs(constant) > 1e-7) {
       s += "+" + formConst;
     }
     if (variables.size() == 0 && products.size() == 0) {

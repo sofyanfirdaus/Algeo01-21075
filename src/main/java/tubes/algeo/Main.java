@@ -1,5 +1,7 @@
 package tubes.algeo;
 
+import tubes.algeo.studikasus.PolynomInterpolation;
+
 /**
  * Hello world!
  *
@@ -11,12 +13,14 @@ public class Main {
     // Matrix m = test.scanMatrix();
     // System.out.println(m);
     // test.mainMenu();
-    Matrix system = Matrix.from(new double[][] {
-    {1  , -1 , 0 ,  0 , 1  ,  3},
-    {1  ,  1 , 0 , -3 , 0  ,  6},
-    {2  , -1 , 0 ,  1 , -1 ,  5},
-    {-1 ,  2 , 0 , -2 , -1 , -1}
-    });
-    System.out.println(LinearEquationSolver.solveSystemGauss(system));
+    final double[] X = new double[] {
+      6.567, 7, 7.258, 7.451, 7.548, 7.839, 8.161, 8.484, 8.709, 9
+    };
+
+    final double[] Y = new double[] {
+      12.624, 21.807, 38.391, 54.517, 51.952, 28.228, 35.764, 20.813, 12.408, 10.534
+    };
+    PolynomInterpolation pol = new PolynomInterpolation(X, Y);
+    System.out.println(pol.getFunction());
   }
 }
