@@ -29,7 +29,7 @@ public class LinearEquationSolverTest {
   { 5, 2, -4, 2, 6 }
   });
 
-  public final double EPSILON = .1d;
+  public final double EPSILON = 0.2d;
 
   HashMap<String, Expr> solution = new HashMap(Map.ofEntries(
     entry("x1", new Expr(0)),
@@ -101,27 +101,51 @@ public class LinearEquationSolverTest {
   }
 
   @Test
-  public void testSPL_D_Gauss() {
-    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGauss(DataStudiKasus.SPL.D.system);
-    assertSolutionEqual(DataStudiKasus.SPL.D.solution, solution);
+  public void testSPL_D1_Gauss() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGauss(DataStudiKasus.SPL.D.system1);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution1, solution);
   }
 
   @Test
-  public void testSPL_D_GaussJordan() {
-    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGaussJordan(DataStudiKasus.SPL.D.system);
-    assertSolutionEqual(DataStudiKasus.SPL.D.solution, solution);
+  public void testSPL_D1_GaussJordan() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGaussJordan(DataStudiKasus.SPL.D.system1);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution1, solution);
   }
 
   @Test
-  public void testSPL_D_Inverse() {
-    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemInverse(DataStudiKasus.SPL.D.system);
-    assertSolutionEqual(DataStudiKasus.SPL.D.solution, solution);
+  public void testSPL_D1_Inverse() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemInverse(DataStudiKasus.SPL.D.system1);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution1, solution);
   }
 
   @Test
-  public void testSPL_D_Cramer() {
-    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemCramer(DataStudiKasus.SPL.D.system);
-    assertSolutionEqual(DataStudiKasus.SPL.D.solution, solution);
+  public void testSPL_D1_Cramer() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemCramer(DataStudiKasus.SPL.D.system1);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution1, solution);
+  }
+
+  @Test
+  public void testSPL_D2_Gauss() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGauss(DataStudiKasus.SPL.D.system2);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution2, solution);
+  }
+
+  @Test
+  public void testSPL_D2_GaussJordan() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGaussJordan(DataStudiKasus.SPL.D.system2);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution2, solution);
+  }
+
+  @Test
+  public void testSPL_D2_Inverse() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemInverse(DataStudiKasus.SPL.D.system2);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution2, solution);
+  }
+
+  @Test
+  public void testSPL_D2_Cramer() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemCramer(DataStudiKasus.SPL.D.system2);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution2, solution);
   }
 
   @Test

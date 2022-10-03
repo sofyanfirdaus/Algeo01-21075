@@ -112,10 +112,10 @@ public class Matrix {
     for (int j = 0; j < triangular.getCol() - 1; j++) {
       for (int i = j+1; i < triangular.getRow(); i++) {
         double val = triangular.getElement(j, j);
-        if (val == 0) {
+        if (Math.abs(val) <= 1e-10) {
           boolean zero = true;
           for (int k = i; k < triangular.getRow() && zero; k++) {
-            if (triangular.getElement(k, j) != 0d) {
+            if (Math.abs(triangular.getElement(k, j)) > 1e-10) {
               triangular.swapRow(k, j);
               result *= -1;
               zero = false;
@@ -239,7 +239,7 @@ public class Matrix {
 
   public Matrix getInverseMatrixAdj() {
     double det = getDeterminantGauss();
-    if (det == 0d) return null;
+    if (Math.abs(det) <= 1e-10) return null;
     return Matrix.multiply(adj(this).transpose(), 1/det);
   }
 
@@ -258,7 +258,7 @@ public class Matrix {
     boolean equal = getRow() == other.getRow() && getCol() == other.getCol();
     for (int i = 0; i < getRow() && equal; i++) {
       for (int j = 0; j < getCol() && equal; j++) {
-        equal = Math.abs(getElement(i, j) - other.getElement(i, j)) <= .0001d;;
+        equal = Math.abs(getElement(i, j) - other.getElement(i, j)) <= 1e-10;
       }
     }
     return equal;
@@ -292,37 +292,39 @@ public class Matrix {
     for (int i = 0; i < mk.getRow(); i++) {
       double min = mk.getElement(i, 0);
       for (int j = 0; j < mk.getCol(); j++) {
-        if (min > mk.getElement(i, j) && mk.getElement(i, j) != 0) {
+        if ((Math.abs(min) <= 1e-10 || min > mk.getElement(i, j)) && Math.abs(mk.getElement(i, j)) > 1e-10) {
           min = mk.getElement(i, j);
         }
       }
-      mk.data[i].multiply(1.0 / min);
+      if (Math.abs(min) < 1) {
+        mk.data[i].multiply(1.0 / min);
+      }
     }
 
     for (int j = 0; j < m; j++) {
       // find non-zero column
       boolean zero = true;
       for (int i = pivotRow; i < n && zero; i++) {
-        zero = mk.getElement(i, j) == 0;
+        zero = Math.abs(mk.getElement(i, j)) <= 1e-10;
       }
       if (zero) {
         continue;
       }
       for (int i = pivotRow; i < n - 1; i++) {
         double pivotVal = mk.getElement(pivotRow, j);
-        if (Math.abs(pivotVal - 0) <= .0001d) {
+        if (Math.abs(pivotVal) <= 1e-10) {
           // find row to swap
           boolean ok = false;
-          for (int k = pivotRow+1; k < n && !ok; k++) {
-            if (Math.abs(mk.getElement(k, j) - 0) > .0001d) {
+          for (int k = pivotRow + 1; k < n && !ok; k++) {
+            if (Math.abs(mk.getElement(k, j)) > 1e-10) {
               mk.swapRow(pivotRow, k);
               ok = true;
-              i = k-1;
+              i = k - 1;
             }
           }
         } else {
           double t = -mk.getElement(i+1, j)/mk.getElement(pivotRow, j);
-          if (t != 0) {
+          if (Math.abs(t) > 1e-10) {
             mk.data[i+1] = addMul(mk.data[i+1], mk.data[pivotRow], t);
           }
         }
@@ -330,12 +332,12 @@ public class Matrix {
       pivotRow++;
     }
     for(int i = 0; i < Math.min(m - 1, n); i++) {
-      if (mk.getElement(i, i) != 0) {
+      if (Math.abs(mk.getElement(i, i)) > 1e-10) {
         mk.data[i].multiply(1/mk.getElement(i, i));
       } else {
         boolean ok = false;
         for (int j = i+1; j < mk.getCol() && !ok; j++) {
-          if (mk.getElement(i, j) != 0) {
+          if (Math.abs(mk.getElement(i, j)) > 1e-10) {
             mk.data[i].multiply(1/mk.getElement(i, j));
             ok = true;
           }
@@ -355,7 +357,7 @@ public class Matrix {
       int pivotRow = j;
       boolean ok = false;
       for (int i = Math.min(n - 1, j); i >= 0 && !ok; i--) {
-        if (mk.getElement(i, j) != 0) {
+        if (Math.abs(mk.getElement(i, j)) > 1e-10) {
           pivotRow = i;
           ok = true;
         }
