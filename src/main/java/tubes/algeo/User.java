@@ -2,8 +2,12 @@ package tubes.algeo;
 
 import java.util.HashMap;
 import java.util.Scanner;
+
+import tubes.algeo.studikasus.PolynomInterpolation;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class User {
 
@@ -60,10 +64,49 @@ public class User {
       System.err.println("File tidak ada atau nama yang dimasukkan salah.");
       e.printStackTrace();
       ketik.close();
-      System.exit(0);
+      System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+      int out;
+      out = input.nextInt();
+      while (out != 1 && out != 2) {
+        System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+        System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+        out = input.nextInt();
+      }
+      if (out == 1) {
+        System.out.println("");
+        mainMenu();
+      }
+      else if (out == 2) {
+        Keluar();
+      }
     }
     ketik.close();
     return m;
+  }
+
+  public Matrix scanTitik() {
+    int n;
+    System.out.print("Masukkan berapa banyak titik sampel : ");
+    n = input.nextInt();
+    double[] x = new double[n];
+    double[] y = new double[n];
+
+    Matrix matrix = new Matrix(n,2);
+    for(int i = 0; i < n; i++){
+      for (int j = 0; j < 2; j++){
+        if (j == 0) {
+          System.out.print("Masukkan kooridnat x" +i+ ": ");
+				}
+				else {
+					System.out.print("Masukkan koordinat y" +i+ ": ");
+				}
+        matrix.setElement(i,j,input.nextDouble());
+        }
+      }
+    System.out.println("Titik-titik yang Anda masukkan ialah :");
+    System.out.println(matrix);
+
+    return matrix;
   }
 
   public Matrix scanMatrix() {
@@ -297,7 +340,6 @@ public class User {
     else if (out == 2) {
       Keluar();
     }
-    
   }
 
   public void menuMatriksBalikan() {
@@ -378,7 +420,103 @@ public class User {
   }
 
   public void menuInterPolinom() {
+    System.out.println("Anda memilih menu Interpolasi Polinom");
+    System.out.println("");
+    System.out.println("Sekarang Anda akan memasukkan Titik-titik Sampel");
+    System.out.println("Pilih metode pembacaan Titik Sampel Anda (1. File ; 2. Keyboard)");
+    System.out.print("Masukkan pilihan Anda : ");
+    int pil,pil2,pil3,out;
+    pil = input.nextInt();
+    System.out.println("");
 
+    while (pil != 1 && pil != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.println("Pilih metode pembacaan Titik Sampel Anda (1. File ; 2. Keyboard)");
+      System.out.print("Masukkan pilihan Anda : ");
+      pil = input.nextInt();
+      System.out.println("");
+    }
+
+    Matrix Maug = null;
+    if (pil == 1) {
+      Maug = readFile();
+      double[] x = new double[Maug.getRow()];
+      double[] y = new double[Maug.getRow()];
+      for(int i = 0; i < Maug.getRow(); i++){
+        for (int j = 0; j < 2; j++){
+          if (j == 0) {
+            x[i] = Maug.getElement(i, j);
+          }
+          else {
+            y[i] = Maug.getElement(i, j);
+          }
+        }
+      }
+
+      System.out.println("");
+      System.out.println("Hasil Fungsi nya ialah :");
+      PolynomInterpolation polinom = new PolynomInterpolation(x,y);
+      System.out.println(polinom.getFunction());
+      pil3 = -1;
+      while (pil3 != 1) {
+        System.out.println("");
+        System.out.print("Masukkan nilai x yang ingin dievaluasi : ");
+        pil2 = input.nextInt();
+        System.out.println(polinom.apply(pil2));
+        System.out.println("Apakah Anda ingin mencari hasil yang lain?");
+        System.out.println("Jika iya ketik [angka bebas] jika mau keluar ketik [1]");
+        pil3 = input.nextInt();
+      }
+
+    } else if (pil == 2) {
+      int n;
+      System.out.print("Masukkan berapa banyak titik sampel : ");
+      n = input.nextInt();
+
+      double[] x = new double[n];
+      double[] y = new double[n];
+
+      for(int i = 0; i < n; i++){
+        for (int j = 0; j < 2; j++){
+          if (j == 0) {
+            System.out.print("Masukkan kooridnat x" +(i+1)+ ": ");
+            x[i] = input.nextDouble();
+          }
+          else {
+            System.out.print("Masukkan koordinat y" +(i+1)+ ": ");
+            y[i] = input.nextDouble();
+          }
+        }
+      }
+      System.out.println("");
+      System.out.println("Hasil Fungsi nya ialah :");
+      PolynomInterpolation polinom = new PolynomInterpolation(x,y);
+      System.out.println(polinom.getFunction());
+      pil3 = -1;
+      while (pil3 != 1) {
+        System.out.println("");
+        System.out.print("Masukkan nilai x yang ingin dievaluasi : ");
+        pil2 = input.nextInt();
+        System.out.println(polinom.apply(pil2));
+        System.out.println("Apakah Anda ingin mencari hasil yang lain?");
+        System.out.println("Jika iya ketik [angka bebas] jika mau keluar ketik [1]");
+        pil3 = input.nextInt();
+      }
+    }
+    System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+    out = input.nextInt();
+    while (out != 1 && out != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+      out = input.nextInt();
+    }
+    if (out == 1) {
+      System.out.println("");
+      mainMenu();
+    }
+    else if (out == 2) {
+      Keluar();
+    }
   }
 
   public void menuInterBicubic() {
