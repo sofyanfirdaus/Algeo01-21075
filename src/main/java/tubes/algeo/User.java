@@ -438,8 +438,8 @@ public class User {
       while (pil3 != 1) {
         System.out.println("");
         System.out.print("Masukkan nilai x yang ingin dievaluasi : ");
-        pil2 = input.nextInt();
-        System.out.print("Nilai dari f("+x+","+y+") ialah: ");
+        pil2 = input.nextDouble();
+        System.out.print("Nilai dari f("+pil2+") ialah: ");
         System.out.println(polinom.apply(pil2));
         System.out.println("Apakah Anda ingin mencari hasil yang lain?");
         System.out.println("Jika iya ketik [angka bebas] jika mau keluar ketik [1]");
@@ -474,7 +474,7 @@ public class User {
       while (pil3 != 1) {
         System.out.println("");
         System.out.print("Masukkan nilai x yang ingin dievaluasi : ");
-        pil2 = input.nextInt();
+        pil2 = input.nextDouble();
         System.out.print("Nilai dari f("+pil2+") ialah: ");
         System.out.println(polinom.apply(pil2));
         System.out.println("Apakah Anda ingin mencari hasil yang lain?");
