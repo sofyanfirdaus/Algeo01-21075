@@ -84,31 +84,6 @@ public class User {
     return m;
   }
 
-  public Matrix scanTitik() {
-    int n;
-    System.out.print("Masukkan berapa banyak titik sampel : ");
-    n = input.nextInt();
-    double[] x = new double[n];
-    double[] y = new double[n];
-
-    Matrix matrix = new Matrix(n,2);
-    for(int i = 0; i < n; i++){
-      for (int j = 0; j < 2; j++){
-        if (j == 0) {
-          System.out.print("Masukkan kooridnat x" +i+ ": ");
-				}
-				else {
-					System.out.print("Masukkan koordinat y" +i+ ": ");
-				}
-        matrix.setElement(i,j,input.nextDouble());
-        }
-      }
-    System.out.println("Titik-titik yang Anda masukkan ialah :");
-    System.out.println(matrix);
-
-    return matrix;
-  }
-
   public Matrix scanMatrix() {
     int m,n;
     System.out.println("Masukkan Ordo Matriks m x n");
