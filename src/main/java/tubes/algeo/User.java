@@ -1,5 +1,6 @@
 package tubes.algeo;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -88,6 +89,26 @@ public class User {
     return matrix;
   }
 
+  public Matrix scanMatrixPersegi() {
+    int n;
+    System.out.println("Masukkan n dalam Ordo Matriks n x n : ");
+    n = input.nextInt();
+
+    Matrix matrix = new Matrix(n,n);
+
+    System.out.println("Tulis Elemen Matriks ");
+    for(int i = 0; i < n; i++){
+      for (int j = 0; j < n; j++){
+        System.out.print("Masukkan Elemen Baris "+(i+1)+" dan Kolom "+(j+1)+" : ");
+        matrix.setElement(i,j,input.nextDouble());
+      }
+    }
+    System.out.println("Matriks yang Anda masukkan ialah :");
+    System.out.println(matrix);
+
+    return matrix;
+  }
+
   static Scanner input = new Scanner(System.in);
 
   public void mainMenu() {
@@ -131,7 +152,7 @@ public class User {
     System.out.println("Sekarang Anda akan memasukkan Matriks");
     System.out.println("Pilih metode pembacaan Matriks Anda (1. File ; 2. Keyboard)");
     System.out.print("Masukkan pilihan Anda : ");
-    int pil;
+    int pil,pil2,out;
     pil = input.nextInt();
     System.out.println("");
 
@@ -149,7 +170,54 @@ public class User {
     } else if (pil == 2) {
       Maug = scanMatrix();
     }
-    // Ini belom selesai.
+    
+    System.out.println("Pilih metode pencarian Determinan");
+    System.out.println("1. Metode Eliminasi Gauss");
+    System.out.println("2. Metode Eliminasi Gauss-Jordan");
+    System.out.println("3. Metode Matriks Balikan");
+    System.out.println("4. Kaidah Cramer");
+    System.out.print("Masukkan pilihan Anda : ");
+    pil2 = input.nextInt();
+    System.out.println("");
+    while (pil2 != 1 && pil2 != 2 && pil2 != 3 && pil2 != 4) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.println("Pilih metode pencarian Determinan");
+      System.out.println("1. Metode Eliminasi Gauss");
+      System.out.println("2. Metode Eliminasi Gauss-Jordan");
+      System.out.println("3. Metode Matriks Balikan");
+      System.out.println("4. Kaidah Cramer");
+      System.out.print("Masukkan pilihan Anda : ");
+      pil2 = input.nextInt();
+      System.out.println("");
+    }
+
+    if (pil2 == 1) {
+      System.out.println(LinearEquationSolver.solveSystemGauss(Maug));
+    }
+    else if (pil2 == 2) {
+      System.out.println(LinearEquationSolver.solveSystemGaussJordan(Maug));
+    }
+    else if (pil2 == 3) {
+      System.out.println(LinearEquationSolver.solveSystemInverse(Maug));
+    }
+    else if (pil2 == 4) {
+      System.out.println(LinearEquationSolver.solveSystemCramer(Maug));
+    }
+
+    System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+    out = input.nextInt();
+    while (out != 1 && out != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+      out = input.nextInt();
+    }
+    if (out == 1) {
+      System.out.println("");
+      mainMenu();
+    }
+    else if (out == 2) {
+      Keluar();
+    }
   }
 
   public void menuDeterminan() {
@@ -174,7 +242,7 @@ public class User {
     if (pil == 1) {
       Maug = readFile();
     } else if (pil == 2) {
-      Maug = scanMatrix();
+      Maug = scanMatrixPersegi();
     }
 
     if (Maug.getRow() != Maug.getCol()) {
@@ -246,7 +314,7 @@ public class User {
     if (pil == 1) {
       Maug = readFile();
     } else if (pil == 2) {
-      Maug = scanMatrix();
+      Maug = scanMatrixPersegi();
     }
 
     if (Maug.getRow() != Maug.getCol()) {
