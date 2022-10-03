@@ -73,11 +73,12 @@ public class User {
     System.out.print("Masukkan kolom n : ");
     n = input.nextInt();
 
-    Matrix matrix = new Matrix(m,n); //Bingung implementasinya gmn
+    Matrix matrix = new Matrix(m,n);
 
     System.out.println("Tulis Elemen Matriks ");
     for(int i = 0; i < m; i++){
       for (int j = 0; j < n; j++){
+        System.out.print("Masukkan Elemen Baris "+(i+1)+" dan Kolom "+(j+1)+" : ");
         matrix.setElement(i,j,input.nextDouble());
       }
     }
@@ -120,8 +121,7 @@ public class User {
     } else if (pil == 6) {
       menuRegresi();
     } else if (pil == 7) {
-      input.close();
-      System.exit(0);
+      Keluar();
     }
   }
 
@@ -149,11 +149,77 @@ public class User {
     } else if (pil == 2) {
       Maug = scanMatrix();
     }
-    System.out.println(Maug);
+    // Ini belom selesai.
   }
 
   public void menuDeterminan() {
+    System.out.println("Anda memilih menu Determinan");
+    System.out.println("");
+    System.out.println("Sekarang Anda akan memasukkan Matriks");
+    System.out.println("Pilih metode pembacaan Matriks Anda (1. File ; 2. Keyboard)");
+    System.out.print("Masukkan pilihan Anda : ");
+    int pil,pil2,out;
+    pil = input.nextInt();
+    System.out.println("");
 
+    while (pil != 1 && pil != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.println("Pilih metode pembacaan Matriks Anda (1. File ; 2. Keyboard)");
+      System.out.print("Masukkan pilihan Anda : ");
+      pil = input.nextInt();
+      System.out.println("");
+    }
+
+    Matrix Maug = null;
+    if (pil == 1) {
+      Maug = readFile();
+    } else if (pil == 2) {
+      Maug = scanMatrix();
+    }
+
+    if (Maug.getRow() != Maug.getCol()) {
+      System.out.println("Tidak punya determinan karena bukan matriks persegi");
+			System.out.println("Kembali ke Menu Utama");
+			System.out.println("");
+      mainMenu();
+    }
+    else {
+      System.out.println("Pilih metode pencarian Determinan");
+      System.out.println("1. Ekspansi Kofaktor");
+      System.out.println("2. Gauss");
+			System.out.print("Masukkan pilihan Anda : ");
+      pil2 = input.nextInt();
+      while (pil2 != 1 && pil2 != 2) {
+        System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+        System.out.println("Pilih metode pencarian Determinan");
+        System.out.println("1. Ekspansi Kofaktor");
+        System.out.println("2. Gauss");
+        System.out.print("Masukkan pilihan Anda : ");
+      }
+
+      if (pil2 == 1) {
+        double answer = Maug.getDeterminantCofactor();
+        System.out.println("Hasil Determinannya ialah "+answer);
+      }
+      else if (pil2 == 2) {
+        double answer = Maug.getDeterminantGauss();
+        System.out.println("Hasil Determinannya ialah "+answer);
+      }
+      System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+			out = input.nextInt();
+      while (out != 1 && out != 2) {
+        System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+        System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+			  out = input.nextInt();
+      }
+      if (out == 1) {
+        System.out.println("");
+        mainMenu();
+      }
+      else if (out == 2) {
+        Keluar();
+      }
+    }
   }
 
   public void menuMatriksBalikan() {
@@ -184,6 +250,11 @@ public class User {
     System.out.print("Masukkan pilihan menu yang diinginkan : ");
 
     return scanner.nextInt();
+  }
+
+  public void Keluar() {
+    input.close();
+    System.exit(0);
   }
 }
 
