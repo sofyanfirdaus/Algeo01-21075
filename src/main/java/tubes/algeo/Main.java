@@ -35,16 +35,12 @@ public class Main {
     // System.out.println(LinearEquationSolver.solve(a, b, "x", valueMap));
     // System.out.println(Expr.multiply(a, 2));
     Matrix system = Matrix.from(new double[][] {
-    { 5, 10, 6, 15, 4, 3, 24, 12, -9, 8, 72 },
-    { 5, 0, 0, 5, 2, 4, 0, 3, 0, 4, 42 },
-    { 9, 1, 0, 0, 0, 0, 3, 8, 7, 5, 25 },
-    { 3, 5, 7, 1, 2, 5, 9, 7, 4, 1, 5 },
-    { 2, 3, 4, 2, 3, 8, 7, 0, 4, 2, 3 },
-    { 2, 0, 6, 8, 5, 2, 3, 5, 7, 0, 6 },
-    { 5, 2, 2, 0, 21, 5, 8, 70000, 5, 2, 3 },
-    { 3, 3, 3, 5, 8, 7, 1, 1, 5, 6, 3 },
-    { 8, 0, 9, 8, 7, 0, 8, 5, 2, 1, 5 },
-    { 1, 5, 8, 5, 6, 3, 5, 7, 8, 9, 10 }
+    {1   , 1/2d , 1/3d , 1/4d , 1/5d  ,  1/6d , 1},
+    {1/2d , 1/3d , 1/4d , 1/5d , 1/6d  ,  1/7d , 0},
+    {1/3d , 1/4d , 1/5d , 1/6d , 1/7d  ,  1/8d , 0},
+    {1/4d , 1/5d , 1/6d , 1/7d , 1/8d  ,  1/9d , 0},
+    {1/5d , 1/6d , 1/7d , 1/8d , 1/9d  , 1/10d , 0},
+    {1/6d , 1/7d , 1/8d , 1/9d , 1/10d , 1/11d , 0}
     });
     HashMap<String, Expr> solution1 = LinearEquationSolver.solveSystemGauss(system);
     HashMap<String, Expr> solution2 = LinearEquationSolver.solveSystemGaussJordan(system);
@@ -61,7 +57,7 @@ public class Main {
       Expr.var("y", 2)
     );
     System.out.println(testEval);
-    HashMap<String, Double> varValues = new HashMap(Map.ofEntries(
+    HashMap<String, Double> varValues = new HashMap<String, Double>(Map.ofEntries(
       entry("x", 2d),
       entry("y", 5d)
     ));

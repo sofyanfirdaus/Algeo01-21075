@@ -373,7 +373,7 @@ public class Matrix {
     for (int j = 0; j < getCol(); j++) {
       int max = 0;
       for (int i = 0; i < getRow(); i++) {
-        int chars = String.valueOf(data[i].getElement(j)).length();
+        int chars = String.format("%.2f", data[i].getElement(j)).length();
         if (max < chars) {
           max = chars;
         }

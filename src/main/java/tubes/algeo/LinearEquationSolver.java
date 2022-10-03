@@ -1,6 +1,5 @@
 package tubes.algeo;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 import tubes.algeo.Expr.Var;
@@ -12,22 +11,30 @@ public class LinearEquationSolver {
     Expr _lhs = new Expr(lhs.getConstant(), lhs.getVariables().toArray(new Expr.Var[lhs.getVariables().size()]));
     Expr _rhs = new Expr(rhs.getConstant(), rhs.getVariables().toArray(new Expr.Var[rhs.getVariables().size()]));
 
-    for (int i = 0; i < _lhs.getVariables().size(); i++) {
-      Var sub = _lhs.getVariables().get(i);
+
+    for (int i = 0; i < lhs.getVariables().size(); i++) {
+      Var sub = lhs.getVariables().get(i);
       String name = sub.getName();
       if (valueMap.containsKey(name)) {
         double coeff = sub.getCoefficient();
         _lhs.add(Expr.add(Expr.multiply(valueMap.get(name), coeff), new Expr(0, Expr.var(sub.getName(), -coeff))));
+      } else if (!name.equals(var)) {
+        String newName = name.replace("x", "p");
+        valueMap.put(name, new Expr(0, Expr.var(newName)));
         i--;
       }
     }
 
-    for (int i = 0; i < _rhs.getVariables().size(); i++) {
-      Var sub = _rhs.getVariables().get(i);
+    for (int i = 0; i < rhs.getVariables().size(); i++) {
+      Var sub = rhs.getVariables().get(i);
       String name = sub.getName();
       if (valueMap.containsKey(name)) {
         double coeff = sub.getCoefficient();
         _rhs.add(Expr.add(Expr.multiply(valueMap.get(name), coeff), new Expr(0, Expr.var(sub.getName(), -coeff))));
+      } else if (name != var) {
+        String newName = name.replace("x", "p");
+        valueMap.put(name, new Expr(0, Expr.var(newName)));
+        i--;
       }
     }
 
@@ -43,7 +50,7 @@ public class LinearEquationSolver {
       return _rhs;
     }
 
-    return new Expr(0, Expr.var(var.replace("x", "p"), 1));
+    return new Expr(0, Expr.var(var.replace("x", "p")));
   }
 
   public static HashMap<String, Expr> solveSystemGauss(Matrix augmentedMatrix) {
@@ -64,16 +71,14 @@ public class LinearEquationSolver {
         return null;
       }
     }
-    int numfree = 0;
     for (int n = numExpect; n > 0; n--) {
       // check wether the variable is a free variable
       boolean free = true;
-      for (int i = sys.getRow() - 1; i >= n - (1 + numfree) && free; i--) {
+      for (int i = sys.getRow() - 1; i >= 0 && free; i--) {
         free = Math.abs(sys.getElement(i, n-1) - 0) <= .0001d;
       }
       if (free) {
         solution.put("x" + n, new Expr(0, Expr.var("p" + n, 1)));
-        numfree++;
       }
     }
     for (int i = sys.getRow() - 1; i >= 0; i--) {
@@ -116,16 +121,14 @@ public class LinearEquationSolver {
         return null;
       }
     }
-    int numfree = 0;
     for (int n = numExpect; n > 0; n--) {
       // check wether the variable is a free variable
       boolean free = true;
-      for (int i = sys.getRow() - 1; i >= n - (1 + numfree) && free; i--) {
+      for (int i = sys.getRow() - 1; i >= 0 && free; i--) {
         free = Math.abs(sys.getElement(i, n-1) - 0) <= .0001d;
       }
       if (free) {
         solution.put("x" + n, new Expr(0, Expr.var("p" + n, 1)));
-        numfree++;
       }
     }
     for (int i = sys.getRow() - 1; i >= 0; i--) {
