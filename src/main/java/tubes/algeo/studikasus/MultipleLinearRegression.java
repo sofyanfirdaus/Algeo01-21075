@@ -23,14 +23,14 @@ public class MultipleLinearRegression {
         }
       }
       Matrix Xt = X.transpose();
-      Matrix XtXinv = Xt.matMul(X).getInverseMatrixGaussJordan();
+      Matrix XtXinv = Xt.matMul(X).getInverseMatrixAdj();
       Matrix Y = new Matrix(X.getRow(), 1);
       for (int i = 0; i < Y.getRow(); i++) {
         Y.setElement(i, 0, y[i]);
       }
       Matrix XtY = Xt.matMul(Y);
       Matrix beta = XtXinv.matMul(XtY);
-      
+
       // construct the function
       function = new Expr(beta.getElement(0, 0));
       for (int i = 1; i < beta.getRow(); i++) {

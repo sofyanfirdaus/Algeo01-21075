@@ -3,6 +3,8 @@ package tubes.algeo;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import tubes.algeo.studikasus.BicubicInterpolation;
+import tubes.algeo.studikasus.MultipleLinearRegression;
 import tubes.algeo.studikasus.PolynomInterpolation;
 
 import java.io.File;
@@ -499,6 +501,108 @@ public class User {
   }
 
   public void menuRegresi() {
+    System.out.println("Anda memilih menu Regresi Linear Berganda");
+    System.out.println("");
+    System.out.println("Sekarang Anda akan memasukkan Data Sampel");
+    System.out.println("Pilih metode pembacaan Data Sampel Anda (1. File ; 2. Keyboard)");
+    System.out.print("Masukkan pilihan Anda : ");
+    int pil,pil2,pil3,out;
+    pil = input.nextInt();
+    System.out.println("");
+
+    while (pil != 1 && pil != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.println("Pilih metode pembacaan Titik Sampel Anda (1. File ; 2. Keyboard)");
+      System.out.print("Masukkan pilihan Anda : ");
+      pil = input.nextInt();
+      System.out.println("");
+    }
+
+    Matrix Maug = null;
+    if (pil == 1) {
+      Maug = readFile();
+      Matrix data = Matrix.subMatrix(Maug, 0, 0, Maug.getRow(), Maug.getCol() - 1);
+      double[] y = new double[Maug.getRow()];
+      for(int i = 0; i < Maug.getRow(); i++){
+        y[i] = Maug.getElement(i, Maug.getCol() - 1);
+      }
+
+      System.out.println("");
+      System.out.println("Hasil regresinya ialah :");
+      System.out.println(mlr.getFunction());
+      pil3 = -1;
+      while (pil3 != 1) {
+        System.out.println("");
+        System.out.print("Masukkan berturut-turut nilai xi yang ingin dievaluasi : ");
+        int n = mlr.getFunction().getVariables().size();
+        double[] x = new double[n];
+        for (int i = 0; i < n; i++) {
+          x[i] = input.nextDouble();
+        }
+        System.out.println();
+        System.out.print("Nilai y = ");
+        System.out.println(mlr.apply(x));
+        System.out.println("Apakah Anda ingin mencari hasil yang lain?");
+        System.out.println("Jika iya ketik [angka bebas] jika mau keluar ketik [1]");
+        pil3 = input.nextInt();
+      }
+
+    } else if (pil == 2) {
+      System.out.print("Masukkan berapa banyak variabel independen : ");
+      int n = input.nextInt();
+      System.out.print("Masukkan berapa banyak baris : ");
+      int m = input.nextInt();
+
+      Matrix x = new Matrix(m, n);
+      double[] y = new double[m];
+
+      System.out.println();
+      System.out.println("Masukkan data variabel independen (dalam bentuk matriks) : ");
+      for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++) {
+          x.setElement(i, j, input.nextDouble());
+        }
+      }
+      System.out.println();
+      System.out.println("Masukkan data variabel dependen : ");
+      for(int i = 0; i < m; i++) {
+        y[i] = input.nextDouble();
+      }
+      MultipleLinearRegression mlr = new MultipleLinearRegression(x,y);
+      System.out.println("");
+      System.out.println("Hasil regresinya ialah :");
+      System.out.println(mlr.getFunction());
+      pil3 = -1;
+      while (pil3 != 1) {
+        System.out.println("");
+        System.out.print("Masukkan berturut-turut nilai xi yang ingin dievaluasi : ");
+        n = mlr.getFunction().getVariables().size();
+        double[] xi = new double[n];
+        for (int i = 0; i < n; i++) {
+          xi[i] = input.nextDouble();
+        }
+        System.out.println();
+        System.out.print("Nilai y = ");
+        System.out.println(mlr.apply(xi));
+        System.out.println("Apakah Anda ingin mencari hasil yang lain?");
+        System.out.println("Jika iya ketik [angka bebas] jika mau keluar ketik [1]");
+        pil3 = input.nextInt();
+      }
+    }
+    System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+    out = input.nextInt();
+    while (out != 1 && out != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+      out = input.nextInt();
+    }
+    if (out == 1) {
+      System.out.println("");
+      mainMenu();
+    }
+    else if (out == 2) {
+      Keluar();
+    }
 
   }
 

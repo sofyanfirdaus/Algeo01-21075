@@ -300,25 +300,6 @@ public class Matrix {
         mk.data[i].multiply(1.0 / min);
       }
     }
-
-    // avoid small number division again
-    int start = 0;
-    for (int j = 0; j < mk.getCol() && start < getRow() - 1; j++) {
-      int idxMin = start;
-      double min = mk.getElement(idxMin, j);
-      int i = start ;
-      for (; i < mk.getRow(); i++) {
-        if ((Math.abs(min) <= 1e-7 || min > mk.getElement(i, j)) && Math.abs(mk.getElement(i, j)) > 1e-7) {
-          idxMin = i;
-          min = mk.getElement(i, j);
-        }
-      }
-      if (idxMin != start) {
-        mk.swapRow(idxMin, start);
-        start++;
-      }
-    }
-
     for (int j = 0; j < m; j++) {
       // find non-zero column
       boolean zero = true;
