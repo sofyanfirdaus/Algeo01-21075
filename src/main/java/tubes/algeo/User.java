@@ -9,7 +9,6 @@ import tubes.algeo.studikasus.PolynomInterpolation;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 
 public class User {
 
@@ -402,7 +401,8 @@ public class User {
     System.out.println("Sekarang Anda akan memasukkan Titik-titik Sampel");
     System.out.println("Pilih metode pembacaan Titik Sampel Anda (1. File ; 2. Keyboard)");
     System.out.print("Masukkan pilihan Anda : ");
-    int pil,pil2,pil3,out;
+    int pil,pil3,out;
+    double pil2;
     pil = input.nextInt();
     System.out.println("");
 
@@ -439,6 +439,7 @@ public class User {
         System.out.println("");
         System.out.print("Masukkan nilai x yang ingin dievaluasi : ");
         pil2 = input.nextInt();
+        System.out.print("Nilai dari f("+x+","+y+") ialah: ");
         System.out.println(polinom.apply(pil2));
         System.out.println("Apakah Anda ingin mencari hasil yang lain?");
         System.out.println("Jika iya ketik [angka bebas] jika mau keluar ketik [1]");
@@ -456,7 +457,7 @@ public class User {
       for(int i = 0; i < n; i++){
         for (int j = 0; j < 2; j++){
           if (j == 0) {
-            System.out.print("Masukkan kooridnat x" +(i+1)+ ": ");
+            System.out.print("Masukkan koordinat x" +(i+1)+ ": ");
             x[i] = input.nextDouble();
           }
           else {
@@ -474,6 +475,7 @@ public class User {
         System.out.println("");
         System.out.print("Masukkan nilai x yang ingin dievaluasi : ");
         pil2 = input.nextInt();
+        System.out.print("Nilai dari f("+pil2+") ialah: ");
         System.out.println(polinom.apply(pil2));
         System.out.println("Apakah Anda ingin mencari hasil yang lain?");
         System.out.println("Jika iya ketik [angka bebas] jika mau keluar ketik [1]");
@@ -497,7 +499,41 @@ public class User {
   }
 
   public void menuInterBicubic() {
+    System.out.println("Anda memilih menu Interpolasi Bicubic");
+    System.out.println("Anda akan memasukkan matriks dari file txt yang sudah disiapkan");
+    
+    int out;
+    Matrix Mfile = readFile();
+    double x = Mfile.getElement(4, 0);
+    double y = Mfile.getElement(4, 1);
+    
+    Matrix Maug = new Matrix(4,4);
+    for(int i = 0; i < 4; i++){
+      for (int j = 0; j < 4; j++){
+        Maug.setElement(i, j, Mfile.getElement(i, j));
+      }
+    }
 
+    BicubicInterpolation bicubic =  new BicubicInterpolation(Maug);
+    System.out.println("Hasil Fungsi nya ialah :");
+    System.out.println(bicubic.getFunction());
+    System.out.print("Nilai dari f("+x+","+y+") ialah: ");
+    System.out.println(bicubic.apply(x,y));
+
+    System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+    out = input.nextInt();
+    while (out != 1 && out != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+      out = input.nextInt();
+    }
+    if (out == 1) {
+      System.out.println("");
+      mainMenu();
+    }
+    else if (out == 2) {
+      Keluar();
+    }
   }
 
   public void menuRegresi() {
@@ -506,7 +542,7 @@ public class User {
     System.out.println("Sekarang Anda akan memasukkan Data Sampel");
     System.out.println("Pilih metode pembacaan Data Sampel Anda (1. File ; 2. Keyboard)");
     System.out.print("Masukkan pilihan Anda : ");
-    int pil,pil2,pil3,out;
+    int pil,pil3,out;
     pil = input.nextInt();
     System.out.println("");
 
@@ -527,6 +563,7 @@ public class User {
         y[i] = Maug.getElement(i, Maug.getCol() - 1);
       }
 
+      MultipleLinearRegression mlr = new MultipleLinearRegression(data, y);
       System.out.println("");
       System.out.println("Hasil regresinya ialah :");
       System.out.println(mlr.getFunction());

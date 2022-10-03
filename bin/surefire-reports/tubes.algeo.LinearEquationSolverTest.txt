@@ -1,0 +1,24 @@
+-------------------------------------------------------------------------------
+Test set: tubes.algeo.LinearEquationSolverTest
+-------------------------------------------------------------------------------
+Tests run: 24, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.167 s <<< FAILURE! - in tubes.algeo.LinearEquationSolverTest
+testSPL_D2_Cramer(tubes.algeo.LinearEquationSolverTest)  Time elapsed: 0.055 s  <<< FAILURE!
+java.lang.AssertionError: expected:<-8751600.0> but was:<-521235.3777792116>
+	at tubes.algeo.LinearEquationSolverTest.assertSolutionEqual(LinearEquationSolverTest.java:43)
+	at tubes.algeo.LinearEquationSolverTest.testSPL_D2_Cramer(LinearEquationSolverTest.java:129)
+
+testSPL_D2_Gauss(tubes.algeo.LinearEquationSolverTest)  Time elapsed: 0 s  <<< FAILURE!
+java.lang.AssertionError: expected:<-8751600.0> but was:<9974870.585495008>
+	at tubes.algeo.LinearEquationSolverTest.assertSolutionEqual(LinearEquationSolverTest.java:43)
+	at tubes.algeo.LinearEquationSolverTest.testSPL_D2_Gauss(LinearEquationSolverTest.java:111)
+
+testSPL_D2_GaussJordan(tubes.algeo.LinearEquationSolverTest)  Time elapsed: 0 s  <<< FAILURE!
+java.lang.AssertionError: expected:<-8751600.0> but was:<0.0>
+	at tubes.algeo.LinearEquationSolverTest.assertSolutionEqual(LinearEquationSolverTest.java:43)
+	at tubes.algeo.LinearEquationSolverTest.testSPL_D2_GaussJordan(LinearEquationSolverTest.java:117)
+
+testSPL_D2_Inverse(tubes.algeo.LinearEquationSolverTest)  Time elapsed: 0 s  <<< FAILURE!
+java.lang.AssertionError
+	at tubes.algeo.LinearEquationSolverTest.assertSolutionEqual(LinearEquationSolverTest.java:26)
+	at tubes.algeo.LinearEquationSolverTest.testSPL_D2_Inverse(LinearEquationSolverTest.java:123)
+
