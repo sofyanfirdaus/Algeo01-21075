@@ -171,7 +171,7 @@ public class User {
       Maug = scanMatrix();
     }
     
-    System.out.println("Pilih metode pencarian Determinan");
+    System.out.println("Pilih metode pencarian solusi Sistem Persamaan Linier");
     System.out.println("1. Metode Eliminasi Gauss");
     System.out.println("2. Metode Eliminasi Gauss-Jordan");
     System.out.println("3. Metode Matriks Balikan");
@@ -181,7 +181,7 @@ public class User {
     System.out.println("");
     while (pil2 != 1 && pil2 != 2 && pil2 != 3 && pil2 != 4) {
       System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
-      System.out.println("Pilih metode pencarian Determinan");
+      System.out.println("Pilih metode pencarian solusi Sistem Persamaan Linier");
       System.out.println("1. Metode Eliminasi Gauss");
       System.out.println("2. Metode Eliminasi Gauss-Jordan");
       System.out.println("3. Metode Matriks Balikan");
@@ -192,16 +192,24 @@ public class User {
     }
 
     if (pil2 == 1) {
-      System.out.println(LinearEquationSolver.solveSystemGauss(Maug));
+      HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGauss(Maug);
+      System.out.println("Hasil Solusi SPL-nya ialah :");
+      System.out.println(solution);
     }
     else if (pil2 == 2) {
-      System.out.println(LinearEquationSolver.solveSystemGaussJordan(Maug));
+      HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGaussJordan(Maug);
+      System.out.println("Hasil Solusi SPL-nya ialah :");
+      System.out.println(solution);
     }
     else if (pil2 == 3) {
-      System.out.println(LinearEquationSolver.solveSystemInverse(Maug));
+      HashMap<String, Expr> solution = LinearEquationSolver.solveSystemInverse(Maug);
+      System.out.println("Hasil Solusi SPL-nya ialah :");
+      System.out.println(solution);
     }
     else if (pil2 == 4) {
-      System.out.println(LinearEquationSolver.solveSystemCramer(Maug));
+      HashMap<String, Expr> solution = LinearEquationSolver.solveSystemCramer(Maug);
+      System.out.println("Hasil Solusi SPL-nya ialah :");
+      System.out.println(solution);
     }
 
     System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
