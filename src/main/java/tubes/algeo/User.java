@@ -1,5 +1,6 @@
 package tubes.algeo;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,11 +74,32 @@ public class User {
     System.out.print("Masukkan kolom n : ");
     n = input.nextInt();
 
-    Matrix matrix = new Matrix(m,n); //Bingung implementasinya gmn
+    Matrix matrix = new Matrix(m,n);
 
     System.out.println("Tulis Elemen Matriks ");
     for(int i = 0; i < m; i++){
       for (int j = 0; j < n; j++){
+        System.out.print("Masukkan Elemen Baris "+(i+1)+" dan Kolom "+(j+1)+" : ");
+        matrix.setElement(i,j,input.nextDouble());
+      }
+    }
+    System.out.println("Matriks yang Anda masukkan ialah :");
+    System.out.println(matrix);
+
+    return matrix;
+  }
+
+  public Matrix scanMatrixPersegi() {
+    int n;
+    System.out.println("Masukkan n dalam Ordo Matriks n x n : ");
+    n = input.nextInt();
+
+    Matrix matrix = new Matrix(n,n);
+
+    System.out.println("Tulis Elemen Matriks ");
+    for(int i = 0; i < n; i++){
+      for (int j = 0; j < n; j++){
+        System.out.print("Masukkan Elemen Baris "+(i+1)+" dan Kolom "+(j+1)+" : ");
         matrix.setElement(i,j,input.nextDouble());
       }
     }
@@ -120,8 +142,7 @@ public class User {
     } else if (pil == 6) {
       menuRegresi();
     } else if (pil == 7) {
-      input.close();
-      System.exit(0);
+      Keluar();
     }
   }
 
@@ -131,7 +152,7 @@ public class User {
     System.out.println("Sekarang Anda akan memasukkan Matriks");
     System.out.println("Pilih metode pembacaan Matriks Anda (1. File ; 2. Keyboard)");
     System.out.print("Masukkan pilihan Anda : ");
-    int pil;
+    int pil,pil2,out;
     pil = input.nextInt();
     System.out.println("");
 
@@ -149,15 +170,211 @@ public class User {
     } else if (pil == 2) {
       Maug = scanMatrix();
     }
-    System.out.println(Maug);
+    
+    System.out.println("Pilih metode pencarian solusi Sistem Persamaan Linier");
+    System.out.println("1. Metode Eliminasi Gauss");
+    System.out.println("2. Metode Eliminasi Gauss-Jordan");
+    System.out.println("3. Metode Matriks Balikan");
+    System.out.println("4. Kaidah Cramer");
+    System.out.print("Masukkan pilihan Anda : ");
+    pil2 = input.nextInt();
+    System.out.println("");
+    while (pil2 != 1 && pil2 != 2 && pil2 != 3 && pil2 != 4) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.println("Pilih metode pencarian solusi Sistem Persamaan Linier");
+      System.out.println("1. Metode Eliminasi Gauss");
+      System.out.println("2. Metode Eliminasi Gauss-Jordan");
+      System.out.println("3. Metode Matriks Balikan");
+      System.out.println("4. Kaidah Cramer");
+      System.out.print("Masukkan pilihan Anda : ");
+      pil2 = input.nextInt();
+      System.out.println("");
+    }
+
+    if (pil2 == 1) {
+      HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGauss(Maug);
+      System.out.println("Hasil Solusi SPL-nya ialah :");
+      System.out.println(solution);
+    }
+    else if (pil2 == 2) {
+      HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGaussJordan(Maug);
+      System.out.println("Hasil Solusi SPL-nya ialah :");
+      System.out.println(solution);
+    }
+    else if (pil2 == 3) {
+      HashMap<String, Expr> solution = LinearEquationSolver.solveSystemInverse(Maug);
+      System.out.println("Hasil Solusi SPL-nya ialah :");
+      System.out.println(solution);
+    }
+    else if (pil2 == 4) {
+      HashMap<String, Expr> solution = LinearEquationSolver.solveSystemCramer(Maug);
+      System.out.println("Hasil Solusi SPL-nya ialah :");
+      System.out.println(solution);
+    }
+
+    System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+    out = input.nextInt();
+    while (out != 1 && out != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+      out = input.nextInt();
+    }
+    if (out == 1) {
+      System.out.println("");
+      mainMenu();
+    }
+    else if (out == 2) {
+      Keluar();
+    }
   }
 
   public void menuDeterminan() {
+    System.out.println("Anda memilih menu Determinan");
+    System.out.println("");
+    System.out.println("Sekarang Anda akan memasukkan Matriks");
+    System.out.println("Pilih metode pembacaan Matriks Anda (1. File ; 2. Keyboard)");
+    System.out.print("Masukkan pilihan Anda : ");
+    int pil,pil2,out;
+    pil = input.nextInt();
+    System.out.println("");
 
+    while (pil != 1 && pil != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.println("Pilih metode pembacaan Matriks Anda (1. File ; 2. Keyboard)");
+      System.out.print("Masukkan pilihan Anda : ");
+      pil = input.nextInt();
+      System.out.println("");
+    }
+
+    Matrix Maug = null;
+    if (pil == 1) {
+      Maug = readFile();
+    } else if (pil == 2) {
+      Maug = scanMatrixPersegi();
+    }
+
+    if (Maug.getRow() != Maug.getCol()) {
+      System.out.println("Tidak punya determinan karena bukan matriks persegi");
+			System.out.println("");
+    }
+    else {
+      System.out.println("Pilih metode pencarian Determinan");
+      System.out.println("1. Ekspansi Kofaktor");
+      System.out.println("2. OBE");
+			System.out.print("Masukkan pilihan Anda : ");
+      pil2 = input.nextInt();
+      System.out.println("");
+      while (pil2 != 1 && pil2 != 2) {
+        System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+        System.out.println("Pilih metode pencarian Determinan");
+        System.out.println("1. Ekspansi Kofaktor");
+        System.out.println("2. OBE");
+        System.out.print("Masukkan pilihan Anda : ");
+        pil2 = input.nextInt();
+        System.out.println("");
+      }
+
+      if (pil2 == 1) {
+        double answer = Maug.getDeterminantCofactor();
+        System.out.println("Hasil Determinannya ialah "+answer);
+      }
+      else if (pil2 == 2) {
+        double answer = Maug.getDeterminantGauss();
+        System.out.println("Hasil Determinannya ialah "+answer);
+      }
+    }
+    System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+    out = input.nextInt();
+    while (out != 1 && out != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+      out = input.nextInt();
+    }
+    if (out == 1) {
+      System.out.println("");
+      mainMenu();
+    }
+    else if (out == 2) {
+      Keluar();
+    }
+    
   }
 
   public void menuMatriksBalikan() {
+    System.out.println("Anda memilih menu Matriks Balikan");
+    System.out.println("");
+    System.out.println("Sekarang Anda akan memasukkan Matriks");
+    System.out.println("Pilih metode pembacaan Matriks Anda (1. File ; 2. Keyboard)");
+    System.out.print("Masukkan pilihan Anda : ");
+    int pil,pil2,out;
+    pil = input.nextInt();
+    System.out.println("");
 
+    while (pil != 1 && pil != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.println("Pilih metode pembacaan Matriks Anda (1. File ; 2. Keyboard)");
+      System.out.print("Masukkan pilihan Anda : ");
+      pil = input.nextInt();
+      System.out.println("");
+    }
+
+    Matrix Maug = null;
+    if (pil == 1) {
+      Maug = readFile();
+    } else if (pil == 2) {
+      Maug = scanMatrixPersegi();
+    }
+
+    if (Maug.getRow() != Maug.getCol()) {
+      System.out.println("Tidak punya determinan karena bukan matriks persegi,");
+      System.out.println("Matriks balikan tidak dapat dicari");
+			System.out.println("");
+    }
+    else if (Maug.getDeterminantCofactor() == 0.0 || Maug.getDeterminantGauss() == 0.0) {
+      System.out.println("Tidak punya matriks balikan karena determinannya 0");
+      System.out.println("");
+    }
+    else {
+      System.out.println("Pilih metode pencarian Matriks Balikan");
+      System.out.println("1. Adjoin");
+      System.out.println("2. Gauss-Jordan");
+			System.out.print("Masukkan pilihan Anda : ");
+      pil2 = input.nextInt();
+      System.out.println("");
+      while (pil2 != 1 && pil2 != 2) {
+        System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+        System.out.println("Pilih metode pencarian Matriks Balikan");
+        System.out.println("1. Adjoin");
+        System.out.println("2. Gauss-Jordan");
+        System.out.print("Masukkan pilihan Anda : ");
+        pil2 = input.nextInt();
+        System.out.println("");
+      }
+      if (pil == 1) {
+        Matrix answer = Maug.getInverseMatrixAdj();
+        System.out.println("Hasil Inverse Matriks ialah :");
+        System.out.println(answer);
+      }
+      else if (pil == 2) {
+        Matrix answer = Maug.getInverseMatrixGaussJordan();
+        System.out.println("Hasil Inverse Matriks ialah :");
+        System.out.println(answer);
+      }
+    }
+    System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+    out = input.nextInt();
+    while (out != 1 && out != 2) {
+      System.out.println("Masukan Anda Salah! Silakan Ulangi Masukan Anda");
+      System.out.print("Apakah Anda ingin kembali ke [1]Menu Utama atau [2]Keluar ? ");
+      out = input.nextInt();
+    }
+    if (out == 1) {
+      System.out.println("");
+      mainMenu();
+    }
+    else if (out == 2) {
+      Keluar();
+    }
   }
 
   public void menuInterPolinom() {
@@ -184,6 +401,11 @@ public class User {
     System.out.print("Masukkan pilihan menu yang diinginkan : ");
 
     return scanner.nextInt();
+  }
+
+  public void Keluar() {
+    input.close();
+    System.exit(0);
   }
 }
 
