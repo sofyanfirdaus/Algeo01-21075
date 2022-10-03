@@ -1,6 +1,5 @@
 package tubes.algeo;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 import tubes.algeo.Expr.Var;
@@ -12,22 +11,30 @@ public class LinearEquationSolver {
     Expr _lhs = new Expr(lhs.getConstant(), lhs.getVariables().toArray(new Expr.Var[lhs.getVariables().size()]));
     Expr _rhs = new Expr(rhs.getConstant(), rhs.getVariables().toArray(new Expr.Var[rhs.getVariables().size()]));
 
-    for (int i = 0; i < _lhs.getVariables().size(); i++) {
-      Var sub = _lhs.getVariables().get(i);
+
+    for (int i = 0; i < lhs.getVariables().size(); i++) {
+      Var sub = lhs.getVariables().get(i);
       String name = sub.getName();
       if (valueMap.containsKey(name)) {
         double coeff = sub.getCoefficient();
         _lhs.add(Expr.add(Expr.multiply(valueMap.get(name), coeff), new Expr(0, Expr.var(sub.getName(), -coeff))));
+      } else if (!name.equals(var)) {
+        String newName = name.replace("x", "p");
+        valueMap.put(name, new Expr(0, Expr.var(newName)));
         i--;
       }
     }
 
-    for (int i = 0; i < _rhs.getVariables().size(); i++) {
-      Var sub = _rhs.getVariables().get(i);
+    for (int i = 0; i < rhs.getVariables().size(); i++) {
+      Var sub = rhs.getVariables().get(i);
       String name = sub.getName();
       if (valueMap.containsKey(name)) {
         double coeff = sub.getCoefficient();
         _rhs.add(Expr.add(Expr.multiply(valueMap.get(name), coeff), new Expr(0, Expr.var(sub.getName(), -coeff))));
+      } else if (name != var) {
+        String newName = name.replace("x", "p");
+        valueMap.put(name, new Expr(0, Expr.var(newName)));
+        i--;
       }
     }
 
@@ -43,54 +50,55 @@ public class LinearEquationSolver {
       return _rhs;
     }
 
-    return null;
+    return new Expr(0, Expr.var(var.replace("x", "p")));
   }
 
   public static HashMap<String, Expr> solveSystemGauss(Matrix augmentedMatrix) {
-    try {
-      if (augmentedMatrix.getRow() + 1 != augmentedMatrix.getCol()) {
-        throw new InvalidParameterException("matrix doesn't represent system of linear equations");
-      }
-    } catch(Exception e) {
-      e.printStackTrace();
-    }
-
     HashMap<String, Expr> solution = new HashMap<>();
-
     // clone matrix
     Matrix sys = new Matrix(augmentedMatrix.getMatrixData()).getEchelon();
-
-    // check free variables
-    int firstZero = -1;
-    for (int i = 0; i < sys.getRow(); i++) {
-      boolean zero = true;
+    // the number of the expected variables
+    int numExpect = sys.getCol() - 1;
+    // check wether the system has solution
+    boolean zeroes = true;
+    for (int i = sys.getRow() - 1; i >= 0 && zeroes; i--) {
       int j;
-      for (j = i; j < sys.getCol() - 1 && zero; j++) {
-        zero = sys.getElement(i, j) == 0;
+      for (j = 0; j < numExpect && zeroes; j++) {
+        zeroes = Math.abs(sys.getElement(i, j) - 0) <= .0001d;
       }
-      if (zero) {
-        if (sys.getElement(i, j) != 0) {
-          // no solution
-          return null;
-        }
-        firstZero = firstZero == -1 ? i : firstZero;
-        solution.put("x" + (i+1), new Expr(0, Expr.var("p" + (i+1), 1)));
+      if (zeroes && Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+        // no solution
+        return null;
       }
     }
-
-    // solve the rest
-    int startIdx = firstZero == -1 ? sys.getRow() - 1 : firstZero - 1;
-    for (int i = startIdx; i >= 0; i--) {
+    for (int n = numExpect; n > 0; n--) {
+      // check wether the variable is a free variable
+      boolean free = true;
+      for (int i = sys.getRow() - 1; i >= 0 && free; i--) {
+        free = Math.abs(sys.getElement(i, n-1) - 0) <= .0001d;
+      }
+      if (free) {
+        solution.put("x" + n, new Expr(0, Expr.var("p" + n, 1)));
+      }
+    }
+    for (int i = sys.getRow() - 1; i >= 0; i--) {
+      zeroes = true;
       Expr lhs = new Expr(0);
-      Expr rhs = new Expr(sys.getElement(i, sys.getCol() - 1));
-      for (int j = i; j < sys.getCol() - 1; j++) {
-        lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
+      Expr rhs = new Expr(0);
+      int j;
+      String solvable = "";
+      for (j = 0; j < numExpect; j++) {
+        if (Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+          lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
+          zeroes = false;
+          solvable = solvable == "" ? "x" + (j+1) : solvable;
+        }
       }
-      Expr sol = solve(lhs, rhs, "x" + (i+1), solution);
-      solution.put("x" + (i+1), sol);
+      if (zeroes) continue;
+      rhs.add(new Expr(sys.getElement(i, j)));
+      solution.put(solvable, solve(lhs, rhs, solvable, solution));
     }
-
-    return solution;
+    return solution.size() > 0 ? solution : null;
   }
 
   public static HashMap<String, Expr> solveSystemGaussJordan(Matrix augmentedMatrix) {
@@ -99,37 +107,48 @@ public class LinearEquationSolver {
     // clone matrix
     Matrix sys = new Matrix(augmentedMatrix.getMatrixData()).getReductedEchelon();
 
-    // check free variable
-    int firstZero = -1;
-    for (int i = 0; i < sys.getRow(); i++) {
-      boolean zero = true;
+    // the number of the expected variables
+    int numExpect = sys.getCol() - 1;
+    // check wether the system has solution
+    boolean zeroes = true;
+    for (int i = sys.getRow() - 1; i >= 0 && zeroes; i--) {
       int j;
-      for (j = 0; j < sys.getCol() - 1 && zero; j++) {
-        zero = Math.abs(sys.getElement(i, j) - 0) <= .0001d;
+      for (j = 0; j < numExpect && zeroes; j++) {
+        zeroes = Math.abs(sys.getElement(i, j) - 0) <= .0001d;
       }
-      if (zero) {
-        if (Math.abs(sys.getElement(i, j) - 0) > .0001d) {
-          // no solution
-          return null;
-        }
-        firstZero = firstZero == -1 ? i : firstZero;
-        solution.put("x" + (i+1), new Expr(0, Expr.var("p" + (i+1), 1)));
+      if (zeroes && Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+        // no solution
+        return null;
       }
     }
-
-    // solve the rest
-    int startIdx = firstZero == -1 ? sys.getRow() - 1 : firstZero - 1;
-    for (int i = startIdx; i >= 0; i--) {
+    for (int n = numExpect; n > 0; n--) {
+      // check wether the variable is a free variable
+      boolean free = true;
+      for (int i = sys.getRow() - 1; i >= 0 && free; i--) {
+        free = Math.abs(sys.getElement(i, n-1) - 0) <= .0001d;
+      }
+      if (free) {
+        solution.put("x" + n, new Expr(0, Expr.var("p" + n, 1)));
+      }
+    }
+    for (int i = sys.getRow() - 1; i >= 0; i--) {
+      zeroes = true;
       Expr lhs = new Expr(0);
-      Expr rhs = new Expr(sys.getElement(i, sys.getCol() - 1));
-      for (int j = i; j < sys.getCol() - 1; j++) {
-        lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
+      Expr rhs = new Expr(0);
+      int j;
+      String solvable = "";
+      for (j = 0; j < numExpect; j++) {
+        if (Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+          lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
+          zeroes = false;
+          solvable = solvable == "" ? "x" + (j+1) : solvable;
+        }
       }
-      Expr sol = solve(lhs, rhs, "x" + (i+1), solution);
-      solution.put("x" + (i+1), sol);
+      if (zeroes) continue;
+      rhs.add(new Expr(sys.getElement(i, j)));
+      solution.put(solvable, solve(lhs, rhs, solvable, solution));
     }
-
-    return solution;
+    return solution.size() > 0 ? solution : null;
   }
 
   public static HashMap<String, Expr> solveSystemCramer(Matrix augmentedMatrix) {

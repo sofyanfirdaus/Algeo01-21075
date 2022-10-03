@@ -45,7 +45,7 @@ public class Expr {
 
     @Override
     public String toString() {
-      if (coeff == 0) {
+      if (Math.abs(coeff - 0) <= .0001d) {
         return "";
       }
       String s = "";
@@ -57,7 +57,7 @@ public class Expr {
         String coefform = String.format(Locale.US, "%.2f", coeff)
                             .replaceAll("0*$", "")
                             .replaceAll("\\.$", "");
-        s = coefform + s;
+        s = coeff != -1 ? coefform + s : "-" + s;
       }
       return s;
     }
@@ -102,7 +102,7 @@ public class Expr {
     @Override
     public String toString() {
       String s = "";
-      if (coeff == 0) {
+      if (Math.abs(coeff - 0) <= .0001d) {
         return s;
       }
       if (Math.abs(coeff - 1) > 0.001d) {
@@ -135,6 +135,10 @@ public class Expr {
     Expr c = new Expr(expr.constant, expr.variables.toArray(new Var[expr.variables.size()]));
     c.multiply(n);
     return c;
+  }
+
+  public static Var var(String name) {
+    return var(name, 1);
   }
 
   public static Var var(String name, double coeff) {
@@ -294,7 +298,7 @@ public class Expr {
         s += products.get(i);
       }
     }
-    String formConst = String.format(Locale.US, "%.2f", constant);
+    String formConst = String.format(Locale.US, "%.2f", Math.abs(constant - 0) <= .0001d ? 0 : constant);
     formConst = formConst.replaceAll("0*$", "").replaceAll("\\.$", "");
     if (constant != 0) {
       s += "+" + formConst;
