@@ -7,50 +7,47 @@ import tubes.algeo.Expr.Var;
 /**Solver untuk sistem persamaan <strong>linear<strong> **/
 public class LinearEquationSolver {
 
-  public static Expr solve(Expr lhs, Expr rhs, String var, HashMap<String, Expr> valueMap) {
-    Expr _lhs = new Expr(lhs.getConstant(), lhs.getVariables().toArray(new Expr.Var[lhs.getVariables().size()]));
-    Expr _rhs = new Expr(rhs.getConstant(), rhs.getVariables().toArray(new Expr.Var[rhs.getVariables().size()]));
-
-
+  public static Expr solve(Expr lhs, Expr rhs, String target, HashMap<String, Expr> valueMap) {
+    Expr temp = new Expr(rhs.getConstant()-lhs.getConstant());
     for (int i = 0; i < lhs.getVariables().size(); i++) {
-      Var sub = lhs.getVariables().get(i);
-      String name = sub.getName();
-      if (valueMap.containsKey(name)) {
-        double coeff = sub.getCoefficient();
-        _lhs.add(Expr.add(Expr.multiply(valueMap.get(name), coeff), new Expr(0, Expr.var(sub.getName(), -coeff))));
-      } else if (!name.equals(var)) {
-        String newName = name.replace("x", "p");
-        valueMap.put(name, new Expr(0, Expr.var(newName)));
-        i--;
+      Var v = lhs.getVariables().get(i);
+      if (!v.getName().equals(target)) {
+        temp.subtract(new Expr(0, v));
       }
     }
 
     for (int i = 0; i < rhs.getVariables().size(); i++) {
-      Var sub = rhs.getVariables().get(i);
-      String name = sub.getName();
-      if (valueMap.containsKey(name)) {
-        double coeff = sub.getCoefficient();
-        _rhs.add(Expr.add(Expr.multiply(valueMap.get(name), coeff), new Expr(0, Expr.var(sub.getName(), -coeff))));
-      } else if (name != var) {
-        String newName = name.replace("x", "p");
-        valueMap.put(name, new Expr(0, Expr.var(newName)));
-        i--;
+      Var v = rhs.getVariables().get(i);
+      if (!v.getName().equals(target)) {
+        temp.add(new Expr(0, v));
       }
     }
 
-    double varA = _lhs.getVariable(var) != null ? _lhs.getVariable(var).getCoefficient() : 0;
-    double varB = _rhs.getVariable(var) != null ? _rhs.getVariable(var).getCoefficient() : 0;
-    double varCoeff = varA - varB;
+    double coeff1 = lhs.getVariable(target) != null ? lhs.getVariable(target).getCoefficient() : 0;
+    double coeff2 = rhs.getVariable(target) != null ? rhs.getVariable(target).getCoefficient() : 0;
 
-    if (varCoeff != 0) {
-      _lhs.getVariables().removeIf(x -> x.getName().equals(var));
-      _rhs.getVariables().removeIf(x -> x.getName().equals(var));
-      _rhs.subtract(_lhs);
-      _rhs.multiply(1/varCoeff);
-      return _rhs;
+    double delta = coeff1 - coeff2;
+
+    Expr solution = new Expr(temp.getConstant());
+
+    // substitute
+    for (int i = 0; i < temp.getVariables().size(); i++) {
+      Var v = temp.getVariables().get(i);
+      Var copy = Expr.var(v.getName(), v.getCoefficient(), v.getDegree());
+      if (valueMap.containsKey(copy.getName())) {
+        solution.add(Expr.multiply(valueMap.get(copy.getName()), copy.getCoefficient()));
+      } else {
+        solution.add(new Expr(0, copy));
+        valueMap.put(v.getName(), new Expr(0, Expr.var(v.getName())));
+      }
     }
 
-    return new Expr(0, Expr.var(var.replace("x", "p")));
+    if (delta != 0) {
+      solution.multiply(1.0/delta);
+      return solution;
+    } else {
+      return new Expr(0, Expr.var(target));
+    }
   }
 
   public static HashMap<String, Expr> solveSystemGauss(Matrix augmentedMatrix) {
@@ -64,9 +61,9 @@ public class LinearEquationSolver {
     for (int i = sys.getRow() - 1; i >= 0 && zeroes; i--) {
       int j;
       for (j = 0; j < numExpect && zeroes; j++) {
-        zeroes = Math.abs(sys.getElement(i, j) - 0) <= .0001d;
+        zeroes = Math.abs(sys.getElement(i, j)) <= .0001d;
       }
-      if (zeroes && Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+      if (zeroes && Math.abs(sys.getElement(i, j)) > .0001d) {
         // no solution
         return null;
       }
@@ -75,10 +72,10 @@ public class LinearEquationSolver {
       // check wether the variable is a free variable
       boolean free = true;
       for (int i = sys.getRow() - 1; i >= 0 && free; i--) {
-        free = Math.abs(sys.getElement(i, n-1) - 0) <= .0001d;
+        free = Math.abs(sys.getElement(i, n-1)) <= .0001d;
       }
       if (free) {
-        solution.put("x" + n, new Expr(0, Expr.var("p" + n, 1)));
+        solution.put("x" + n, new Expr(0, Expr.var("x" + n, 1)));
       }
     }
     for (int i = sys.getRow() - 1; i >= 0; i--) {
@@ -88,7 +85,7 @@ public class LinearEquationSolver {
       int j;
       String solvable = "";
       for (j = 0; j < numExpect; j++) {
-        if (Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+        if (Math.abs(sys.getElement(i, j)) > .0001d) {
           lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
           zeroes = false;
           solvable = solvable == "" ? "x" + (j+1) : solvable;
@@ -114,9 +111,9 @@ public class LinearEquationSolver {
     for (int i = sys.getRow() - 1; i >= 0 && zeroes; i--) {
       int j;
       for (j = 0; j < numExpect && zeroes; j++) {
-        zeroes = Math.abs(sys.getElement(i, j) - 0) <= .0001d;
+        zeroes = Math.abs(sys.getElement(i, j)) <= .0001d;
       }
-      if (zeroes && Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+      if (zeroes && Math.abs(sys.getElement(i, j)) > .0001d) {
         // no solution
         return null;
       }
@@ -125,10 +122,10 @@ public class LinearEquationSolver {
       // check wether the variable is a free variable
       boolean free = true;
       for (int i = sys.getRow() - 1; i >= 0 && free; i--) {
-        free = Math.abs(sys.getElement(i, n-1) - 0) <= .0001d;
+        free = Math.abs(sys.getElement(i, n-1)) <= .0001d;
       }
       if (free) {
-        solution.put("x" + n, new Expr(0, Expr.var("p" + n, 1)));
+        solution.put("x" + n, new Expr(0, Expr.var("x" + n, 1)));
       }
     }
     for (int i = sys.getRow() - 1; i >= 0; i--) {
@@ -138,7 +135,7 @@ public class LinearEquationSolver {
       int j;
       String solvable = "";
       for (j = 0; j < numExpect; j++) {
-        if (Math.abs(sys.getElement(i, j) - 0) > .0001d) {
+        if (Math.abs(sys.getElement(i, j)) > .0001d) {
           lhs.add(new Expr(0, Expr.var("x" + (j+1), sys.getElement(i, j))));
           zeroes = false;
           solvable = solvable == "" ? "x" + (j+1) : solvable;

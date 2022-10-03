@@ -106,7 +106,8 @@ public class Expr {
         return s;
       }
       if (Math.abs(coeff - 1) > 0.001d) {
-        s = String.format(Locale.US, "%.2f", coeff);
+        String coefform = String.format(Locale.US, "%.2f", coeff);
+        s += coeff == -1 ? "-" : coefform;
         s = s.replaceAll("0*$", "").replaceAll("\\.$", "");
       }
       if (degree == 0) {
@@ -210,7 +211,7 @@ public class Expr {
       for (int j = 0; j < variables.size(); j++) {
         Var var = variables.get(j);
         Var var2 = other.variables.get(i);
-        if (var.name == var2.name && var.degree == var2.degree) {
+        if (var.name.equals(var2.name) && var.degree == var2.degree) {
           var.coeff += var2.coeff;
           if (var.coeff == 0) {
             variables.remove(j);

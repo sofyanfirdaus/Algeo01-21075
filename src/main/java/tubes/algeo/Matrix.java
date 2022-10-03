@@ -288,6 +288,17 @@ public class Matrix {
     Matrix mk = new Matrix(data);
     int pivotRow = 0;
 
+    // avoid small number division
+    for (int i = 0; i < mk.getRow(); i++) {
+      double min = mk.getElement(i, 0);
+      for (int j = 0; j < mk.getCol(); j++) {
+        if (min > mk.getElement(i, j) && mk.getElement(i, j) != 0) {
+          min = mk.getElement(i, j);
+        }
+      }
+      mk.data[i].multiply(1.0 / min);
+    }
+
     for (int j = 0; j < m; j++) {
       // find non-zero column
       boolean zero = true;

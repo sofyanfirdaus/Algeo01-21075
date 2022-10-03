@@ -1,14 +1,20 @@
 package tubes.algeo;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import tubes.algeo.Expr.Var;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.ActionMap;
+
 import static java.util.Map.entry;
 
 /**
@@ -23,7 +29,7 @@ public class LinearEquationSolverTest {
   { 5, 2, -4, 2, 6 }
   });
 
-  public final double EPSILON = .0001d;
+  public final double EPSILON = .1d;
 
   HashMap<String, Expr> solution = new HashMap(Map.ofEntries(
     entry("x1", new Expr(0)),
@@ -36,11 +42,24 @@ public class LinearEquationSolverTest {
     if (expected == null) {
       assertEquals(expected, actual);
     } else {
+      assertNotNull(actual);
       for (String k : expected.keySet()) {
         Expr exp = expected.get(k);
         Expr act = actual.get(k);
         assertTrue(actual.containsKey(k));
-        assertEquals(exp.toString(), act.toString());
+        if (exp.getVariables().size() > 0) {
+          assertEquals(exp.getVariables().size(), act.getVariables().size());
+          Collections.sort(exp.getVariables(), Comparator.comparing(Var::getName));
+          Collections.sort(act.getVariables(), Comparator.comparing(Var::getName));
+          for (int i = 0; i < exp.getVariables().size(); i++) {
+            Var vExp = exp.getVariables().get(i);
+            Var vAct = exp.getVariables().get(i);
+            assertEquals(vExp.getName(), vAct.getName());
+            assertEquals(vExp.getDegree(), vAct.getDegree());
+            assertEquals(vExp.getCoefficient(), vAct.getCoefficient(), EPSILON);
+          }
+        }
+        assertEquals(exp.getConstant(), act.getConstant(), EPSILON);
       }
     }
   }
@@ -79,6 +98,30 @@ public class LinearEquationSolverTest {
   public void testSPL_C_GaussJordan() {
     HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGaussJordan(DataStudiKasus.SPL.C.system);
     assertSolutionEqual(DataStudiKasus.SPL.C.solution, solution);
+  }
+
+  @Test
+  public void testSPL_D_Gauss() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGauss(DataStudiKasus.SPL.D.system);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution, solution);
+  }
+
+  @Test
+  public void testSPL_D_GaussJordan() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemGaussJordan(DataStudiKasus.SPL.D.system);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution, solution);
+  }
+
+  @Test
+  public void testSPL_D_Inverse() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemInverse(DataStudiKasus.SPL.D.system);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution, solution);
+  }
+
+  @Test
+  public void testSPL_D_Cramer() {
+    HashMap<String, Expr> solution = LinearEquationSolver.solveSystemCramer(DataStudiKasus.SPL.D.system);
+    assertSolutionEqual(DataStudiKasus.SPL.D.solution, solution);
   }
 
   @Test
